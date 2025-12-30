@@ -1,0 +1,379 @@
+@import "tailwindcss";
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* 후시파트너스 브랜드 컬러 시스템 - Professional Green Tech */
+  
+  /* Primary - Teal Green (메인 브랜드 컬러) */
+  --hooxi-primary: #0D9488;
+  --hooxi-primary-dark: #0F766E;
+  --hooxi-primary-light: #E0F2F1;
+  --hooxi-primary-hover: #14B8A6;
+  
+  /* Background Colors */
+  --background: oklch(0.99 0.002 180); /* 살짝 teal 틴트 */
+  --foreground: oklch(0.15 0 0);
+  
+  /* Card & Surface */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0 0);
+  
+  /* Primary - Teal 기반 */
+  --primary: oklch(0.52 0.12 180); /* Teal */
+  --primary-foreground: oklch(0.99 0 0);
+  
+  /* Secondary - 회색-파란색 톤 */
+  --secondary: oklch(0.96 0.005 240);
+  --secondary-foreground: oklch(0.18 0 0);
+  
+  /* Muted - 메시지 배경용 */
+  --muted: oklch(0.965 0.005 180); /* 연한 teal 틴트 */
+  --muted-foreground: oklch(0.50 0 0);
+  
+  /* Accent - 강조 색상 */
+  --accent: oklch(0.96 0.008 180);
+  --accent-foreground: oklch(0.18 0 0);
+  
+  /* Destructive */
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.99 0 0);
+  
+  /* Borders - 미묘한 teal 틴트 */
+  --border: oklch(0.92 0.003 180);
+  --input: oklch(0.94 0.003 180);
+  --ring: oklch(0.52 0.12 180); /* Teal 링 */
+  
+  /* Charts - Teal 계열 */
+  --chart-1: oklch(0.52 0.12 180); /* Teal */
+  --chart-2: oklch(0.6 0.10 200); /* Cyan */
+  --chart-3: oklch(0.65 0.15 160); /* Green */
+  --chart-4: oklch(0.70 0.12 140); /* Light Green */
+  --chart-5: oklch(0.58 0.14 190); /* Blue-Green */
+  
+  /* Radius - 더 둥글게 */
+  --radius: 0.875rem; /* 14px */
+  
+  /* Sidebar - Teal 틴트 */
+  --sidebar: oklch(0.985 0.003 180);
+  --sidebar-foreground: oklch(0.15 0 0);
+  --sidebar-primary: oklch(0.52 0.12 180);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.96 0.005 180);
+  --sidebar-accent-foreground: oklch(0.18 0 0);
+  --sidebar-border: oklch(0.92 0.003 180);
+  --sidebar-ring: oklch(0.52 0.12 180);
+  
+  /* Typography - Pretendard */
+  --font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --base-font-size: 15px; /* 후시봇 기준 */
+  
+  /* Shadows - Teal 틴트 */
+  --shadow-sm: 0 2px 8px rgba(13, 148, 136, 0.08);
+  --shadow-md: 0 8px 24px rgba(13, 148, 136, 0.12);
+  --shadow-lg: 0 16px 48px rgba(13, 148, 136, 0.16);
+  --shadow-xl: 0 24px 64px rgba(13, 148, 136, 0.20);
+}
+
+.dark {
+  /* 다크 모드 - Teal 강조 유지 */
+  --background: oklch(0.13 0 0);
+  --foreground: oklch(0.96 0 0);
+  
+  --card: oklch(0.145 0.005 180); /* 미묘한 teal 틴트 */
+  --card-foreground: oklch(0.96 0 0);
+  
+  --popover: oklch(0.145 0.005 180);
+  --popover-foreground: oklch(0.96 0 0);
+  
+  /* Primary - Teal (다크 모드에서 더 밝게) */
+  --primary: oklch(0.60 0.14 180);
+  --primary-foreground: oklch(0.12 0 0);
+  
+  --secondary: oklch(0.18 0.005 240);
+  --secondary-foreground: oklch(0.96 0 0);
+  
+  --muted: oklch(0.17 0.005 180);
+  --muted-foreground: oklch(0.70 0 0);
+  
+  --accent: oklch(0.19 0.008 180);
+  --accent-foreground: oklch(0.96 0 0);
+  
+  --destructive: oklch(0.55 0.22 27);
+  --destructive-foreground: oklch(0.96 0 0);
+  
+  --border: oklch(0.23 0.005 180);
+  --input: oklch(0.19 0.005 180);
+  --ring: oklch(0.60 0.14 180);
+  
+  /* Charts - Teal 계열 (어두운 배경용) */
+  --chart-1: oklch(0.60 0.14 180);
+  --chart-2: oklch(0.65 0.12 200);
+  --chart-3: oklch(0.70 0.16 160);
+  --chart-4: oklch(0.75 0.13 140);
+  --chart-5: oklch(0.63 0.15 190);
+  
+  /* Sidebar */
+  --sidebar: oklch(0.12 0 0);
+  --sidebar-foreground: oklch(0.96 0 0);
+  --sidebar-primary: oklch(0.60 0.14 180);
+  --sidebar-primary-foreground: oklch(0.12 0 0);
+  --sidebar-accent: oklch(0.19 0.008 180);
+  --sidebar-accent-foreground: oklch(0.96 0 0);
+  --sidebar-border: oklch(0.23 0.005 180);
+  --sidebar-ring: oklch(0.60 0.14 180);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  
+  /* 후시파트너스 커스텀 컬러 */
+  --color-hooxi-primary: #0D9488;
+  --color-hooxi-primary-dark: #0F766E;
+  --color-hooxi-primary-light: #E0F2F1;
+  --color-hooxi-primary-hover: #14B8A6;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-family);
+    font-size: var(--base-font-size);
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* 향상된 스크롤바 - Teal 색상 */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(13, 148, 136, 0.3) 0%, rgba(13, 148, 136, 0.15) 100%);
+    border-radius: 4px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, rgba(13, 148, 136, 0.5) 0%, rgba(13, 148, 136, 0.3) 100%);
+    background-clip: padding-box;
+  }
+
+  /* 선택 영역 - Teal */
+  ::selection {
+    background: rgba(13, 148, 136, 0.2);
+    color: inherit;
+  }
+
+  :root {
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+  }
+
+  .dark {
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer utilities {
+  /* 기존 그림자 유틸리티 */
+  .shadow-inner-right {
+    box-shadow: inset -9px 0 6px -1px rgb(0 0 0 / 0.02);
+  }
+
+  .shadow-inner-left {
+    box-shadow: inset 9px 0 6px -1px rgb(0 0 0 / 0.02);
+  }
+  
+  /* 후시파트너스 커스텀 그림자 - Teal 틴트 */
+  .shadow-hooxi-sm {
+    box-shadow: 0 2px 8px rgba(13, 148, 136, 0.08);
+  }
+  
+  .shadow-hooxi-md {
+    box-shadow: 0 8px 24px rgba(13, 148, 136, 0.12);
+  }
+  
+  .shadow-hooxi-lg {
+    box-shadow: 0 16px 48px rgba(13, 148, 136, 0.16);
+  }
+  
+  .shadow-hooxi-xl {
+    box-shadow: 0 24px 64px rgba(13, 148, 136, 0.20);
+  }
+  
+  /* 글래스모피즘 효과 */
+  .glass-hooxi {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(13, 148, 136, 0.1);
+  }
+  
+  .dark .glass-hooxi {
+    background: rgba(20, 20, 20, 0.95);
+    border: 1px solid rgba(13, 148, 136, 0.15);
+  }
+  
+  /* 그라디언트 텍스트 */
+  .text-gradient-hooxi {
+    background: linear-gradient(135deg, #0F766E 0%, #14B8A6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* 그라디언트 배경 */
+  .bg-gradient-hooxi {
+    background: linear-gradient(135deg, #0D9488 0%, #14B8A6 100%);
+  }
+  
+  .bg-gradient-hooxi-subtle {
+    background: linear-gradient(180deg, #FAFAFA 0%, #E0F2F1 100%);
+  }
+  
+  /* 애니메이션 */
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+  }
+  
+  .animate-gentle-bounce {
+    animation: gentle-bounce 2s ease-in-out infinite;
+  }
+  
+  @keyframes gentle-bounce {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-3px); }
+  }
+  
+  /* 펄스 배지 */
+  .animate-pulse-badge {
+    animation: pulse-badge 2s ease-in-out infinite;
+  }
+  
+  @keyframes pulse-badge {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.8; }
+  }
+}
+
+/* 메시지 애니메이션 개선 */
+@keyframes messageSlideIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px) scale(0.95);
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0) scale(1);
+  }
+}
+
+.message-enter {
+  animation: messageSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 버튼 호버 효과 개선 */
+.btn-hooxi {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-hooxi::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn-hooxi:hover::before {
+  opacity: 1;
+}
+
+.btn-hooxi:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(13, 148, 136, 0.3);
+}
+
+.btn-hooxi:active {
+  transform: translateY(0);
+}
+
+/* 포커스 링 - Teal */
+.focus-hooxi:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.1);
+}
+
+/* 배경 패턴 */
+.bg-pattern-hooxi {
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(13, 148, 136, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(13, 148, 136, 0.03) 0%, transparent 50%);
+}
