@@ -186,7 +186,7 @@ TAVILY_API_KEY=your_tavily_api_key         # 웹 검색 시
 
 ### 1. 배출량 계산
 ```
-사용자: 우리 회사 배출량 계산해줘. 휘발유 1000L, 전기 5000kWh 사용해.
+사용자: 우리 xx 회사 배출량 계산해줘. 휘발유 1000L, 전기 5000kWh 사용해.
 
 AI: 계산 결과입니다:
 - Scope 1: 2.31 tCO2eq
@@ -238,17 +238,7 @@ chatOpeners:
   - "💰 배출권을 판매하고 싶어요"
 ```
 
-## 🛡️ 보안 주의사항
 
-⚠️ **절대 GitHub에 올리면 안 되는 파일:**
-- `.env` 파일 (API 키 포함)
-- `mcp_config.json` (실제 API 키 포함)
-- `node_modules/`
-- `__pycache__/`
-
-✅ **대신 사용:**
-- `.env.example` (템플릿)
-- `mcp_config.example.json` (템플릿)
 
 ## 📦 기술 스택
 
@@ -267,31 +257,3 @@ chatOpeners:
 - **Mermaid** - 다이어그램 렌더링
 - **LangGraph SDK** - 스트리밍 & UI
 
-## 🤝 기여하기
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📝 라이선스
-
-이 프로젝트는 MIT 라이선스 하에 있습니다.
-
-## 👥 개발자
-
-**Hooxi Partners (후시파트너스)**
-- Website: https://hooxipartners.com
-- Email: contact@hooxipartners.com
-
-## 🙏 감사의 말
-
-- [LangGraph](https://langchain-ai.github.io/langgraph/) - AI 워크플로우 프레임워크
-- [Anthropic](https://anthropic.com) - Claude API
-- [Firecrawl](https://firecrawl.dev) - 웹 크롤링 MCP 서버
-- [agent-chat-ui](https://github.com/langchain-ai/agent-chat-ui) - UI 템플릿
-
----
-
-Made with ❤️ by Hooxi Partners
