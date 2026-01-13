@@ -40,7 +40,7 @@ const useTypedStream = useStream<
 export type StreamContextType = ReturnType<typeof useTypedStream>;
 const StreamContext = createContext<StreamContextType | undefined>(undefined);
 
-async function sleep(ms = TIMING.THREAD_FETCH_DELAY) {
+async function sleep(ms: number = TIMING.THREAD_FETCH_DELAY) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
