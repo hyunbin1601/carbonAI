@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cat:*)",
+      "Bash(dir \"C:\\\\ruffy\\\\carbon_ai_ver2\" /s /b)",
+      "Bash(findstr:*)",
+      "Bash(poetry run python:*)",
+      "Bash(python -m pip:*)",
+      "Bash(python -m uvicorn:*)",
+      "Bash(timeout 3:*)",
+      "Bash(timeout 30 python:*)",
+      "Bash(timeout 40 python:*)",
+      "Bash(npm run dev)",
+      "Bash(python -m langgraph:*)",
+      "Bash(pip show:*)",
+      "Bash(python:*)",
+      "Bash(\"C:\\\\Users\\\\hooxi\\\\AppData\\\\Local\\\\Packages\\\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\\\LocalCache\\\\local-packages\\\\Python313\\\\Scripts\\\\langgraph.exe\" dev)",
+      "Bash(pip install:*)",
+      "WebFetch(domain:kroki.io)",
+      "Bash(netstat:*)",
+      "Bash(taskkill /F /PID 28440)",
+      "Bash(powershell.exe -Command \"Stop-Process -Id 28440 -Force\")",
+      "Bash(curl:*)",
+      "Bash(if [ -f \"$APPDATA/Claude/claude_desktop_config.json\" ])",
+      "Bash(then cat \"$APPDATA/Claude/claude_desktop_config.json\")",
+      "Bash(elif [ -f \"$HOME/.config/Claude/claude_desktop_config.json\" ])",
+      "Bash(then cat \"$HOME/.config/Claude/claude_desktop_config.json\")",
+      "Bash(else echo \"Config file not found\")",
+      "Bash(fi)",
+      "Bash(timeout 5 curl:*)",
+      "Bash(for path in \"/actuator/health\" \"/health\" \"/api\" \"/api/emissions\" \"/emissions\" \"/companies\")",
+      "Bash(do echo \"Testing: $path\")",
+      "Bash(done)"
+    ]
+  }
+}

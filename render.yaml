@@ -1,0 +1,15 @@
+services:
+  # Python 백엔드 (LangGraph)
+  - type: web
+    name: carbon-ai-backend
+    runtime: python
+    rootDir: react-agent
+    buildCommand: pip install -r requirements.txt
+    startCommand: langgraph serve --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: TAVILY_API_KEY
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
