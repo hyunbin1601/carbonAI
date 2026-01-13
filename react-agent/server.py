@@ -18,13 +18,18 @@ def main():
     print(f"Starting LangGraph API server on {host}:{port}")
     print(f"Environment: {'Production' if os.environ.get('RENDER') else 'Development'}")
 
+    # Ensure PORT is set in environment for langgraph to use
+    os.environ["PORT"] = str(port)
+    os.environ["HOST"] = host
+
     # Build the command to start LangGraph server
-    # Using langgraph CLI to start the server
+    # Using langgraph dev for better compatibility
     cmd = [
         "langgraph",
-        "up",
+        "dev",
         "--host", host,
-        "--port", port,
+        "--port", str(port),
+        "--no-browser",
     ]
 
     print(f"Running command: {' '.join(cmd)}")
