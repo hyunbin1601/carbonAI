@@ -29,7 +29,7 @@ Branch: main
 Root Directory: react-agent
 Runtime: Python 3
 Build Command: pip install -r requirements.txt
-Start Command: langgraph serve --host 0.0.0.0 --port $PORT
+Start Command: python -m langgraph up --host 0.0.0.0 --port $PORT
 ```
 
 4. **Free** 플랜 선택
