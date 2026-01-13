@@ -23,13 +23,12 @@ def main():
     os.environ["HOST"] = host
 
     # Build the command to start LangGraph server
-    # Using langgraph dev for better compatibility
+    # Use 'up' for production deployment instead of 'dev'
     cmd = [
         "langgraph",
-        "dev",
+        "up",
         "--host", host,
         "--port", str(port),
-        "--no-browser",
     ]
 
     print(f"Running command: {' '.join(cmd)}")
