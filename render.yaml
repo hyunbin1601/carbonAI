@@ -4,7 +4,7 @@ services:
     name: carbon-ai-backend
     runtime: python
     rootDir: react-agent
-    buildCommand: pip install --upgrade pip && pip install -r requirements.txt && pip install -e .
+    buildCommand: pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt && pip install --no-cache-dir -e .
     startCommand: langgraph up --host 0.0.0.0 --port $PORT
     healthCheckPath: /ok
     envVars:
