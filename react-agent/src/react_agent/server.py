@@ -202,7 +202,7 @@ async def root():
 
 # Run server
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))
+    port = int(os.environ.get("PORT", 7860))  # Hugging Face Spaces default
     uvicorn.run(
         "react_agent.server:app",
         host="0.0.0.0",

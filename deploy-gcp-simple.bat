@@ -2,14 +2,14 @@
 REM Windows용 GCP Cloud Run 간단 배포 스크립트
 
 REM === 여기를 수정하세요 ===
-SET PROJECT_ID=YOUR-PROJECT-ID
+SET PROJECT_ID=gen-lang-client-0529157136
 SET SERVICE_NAME=carbon-ai-backend
 SET REGION=asia-northeast3
 
-REM API 키 설정 (Secret Manager 사용 권장)
-SET ANTHROPIC_API_KEY=sk-ant-...
-SET TAVILY_API_KEY=tvly-...
-SET LANGSMITH_API_KEY=lsv2_...
+REM API 키 설정 (실제 키로 변경하세요)
+SET ANTHROPIC_API_KEY=your-anthropic-api-key-here
+SET TAVILY_API_KEY=your-tavily-api-key-here
+SET LANGSMITH_API_KEY=your-langsmith-api-key-here
 REM ========================
 
 SET IMAGE_NAME=gcr.io/%PROJECT_ID%/%SERVICE_NAME%:latest
@@ -34,7 +34,7 @@ gcloud run deploy %SERVICE_NAME% ^
   --memory 2Gi ^
   --cpu 1 ^
   --timeout 300 ^
-  --port 8080 ^
+  --port 7860 ^
   --set-env-vars ANTHROPIC_API_KEY=%ANTHROPIC_API_KEY% ^
   --set-env-vars TAVILY_API_KEY=%TAVILY_API_KEY% ^
   --set-env-vars LANGSMITH_API_KEY=%LANGSMITH_API_KEY% ^

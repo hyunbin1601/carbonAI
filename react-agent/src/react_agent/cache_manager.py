@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 class CacheManager:
-    """캐시 관리자 - Redis 또는 메모리 기반"""
+    # 메모리 기반 캐시
 
     def __init__(
         self,

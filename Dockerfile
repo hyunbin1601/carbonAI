@@ -27,13 +27,13 @@ COPY react-agent/langgraph.json .
 # react-agent 패키지 설치
 RUN pip install --no-cache-dir -e .
 
-# 포트 설정 (Cloud Run은 PORT 환경변수 사용)
-ENV PORT=8080
-EXPOSE 8080
+# 포트 설정 (Hugging Face Spaces는 7860 사용)
+ENV PORT=7860
+EXPOSE 7860
 
 # 헬스체크
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD curl -f http://localhost:8080/ok || exit 1
+    CMD curl -f http://localhost:7860/ok || exit 1
 
 # 서버 실행
 CMD ["python", "-m", "react_agent.server"]
