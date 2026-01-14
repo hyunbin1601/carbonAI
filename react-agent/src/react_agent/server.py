@@ -46,7 +46,7 @@ class ChatRequest(BaseModel):
     message: str = Field(..., description="User message")
     thread_id: Optional[str] = Field(None, description="Thread ID for conversation continuity")
     category: Optional[str] = Field(None, description="Category: 탄소배출권, 규제대응, 고객상담")
-    model: Optional[str] = Field("claude-3-5-sonnet-20241022", description="Model name")
+    model: Optional[str] = Field("claude-haiku-4-5", description="Model name")
 
 
 class ChatResponse(BaseModel):
@@ -79,7 +79,7 @@ async def invoke_agent(request: ChatRequest):
         # Prepare configuration
         config = {
             "configurable": {
-                "model": request.model or "claude-3-5-sonnet-20241022",
+                "model": request.model or "claude-haiku-4-5",
                 "category": request.category,
                 "thread_id": request.thread_id or "default"
             }
@@ -125,7 +125,7 @@ async def stream_agent(request: ChatRequest):
         # Prepare configuration
         config = {
             "configurable": {
-                "model": request.model or "claude-3-5-sonnet-20241022",
+                "model": request.model or "claude-haiku-4-5",
                 "category": request.category,
                 "thread_id": request.thread_id or "default"
             }
@@ -216,10 +216,11 @@ async def get_info():
 @app.post("/assistants/search")
 async def search_assistants(request: Request):
     """Search for assistants (LangGraph Cloud API compatible)."""
-    # Return the default agent
+    # Use a fixed UUID for the assistant
+    assistant_uuid = "fe096781-5601-53d2-b2f6-0d3403f7e9ca"
     return [
         {
-            "assistant_id": "agent",
+            "assistant_id": assistant_uuid,
             "graph_id": "agent",
             "created_at": "2024-01-01T00:00:00Z",
             "updated_at": "2024-01-01T00:00:00Z",
@@ -230,6 +231,34 @@ async def search_assistants(request: Request):
             }
         }
     ]
+
+
+@app.get("/assistants/{assistant_id}")
+async def get_assistant(assistant_id: str):
+    """Get assistant by ID (LangGraph Cloud API compatible)."""
+    # Always return the same assistant regardless of ID
+    return {
+        "assistant_id": assistant_id,
+        "graph_id": "agent",
+        "created_at": "2024-01-01T00:00:00Z",
+        "updated_at": "2024-01-01T00:00:00Z",
+        "config": {},
+        "metadata": {
+            "name": "CarbonAI Agent",
+            "description": "탄소 배출권 전문 AI 챗봇"
+        }
+    }
+
+
+@app.get("/assistants/{assistant_id}/schemas")
+async def get_assistant_schemas(assistant_id: str):
+    """Get assistant schemas (LangGraph Cloud API compatible)."""
+    # Return empty schemas as we don't use custom input/output schemas
+    return {
+        "input_schema": {},
+        "output_schema": {},
+        "config_schema": {}
+    }
 
 
 @app.post("/threads")
@@ -261,6 +290,13 @@ async def get_thread_state(thread_id: str):
     }
 
 
+@app.post("/threads/search")
+async def search_threads(request: Request):
+    """Search for threads (LangGraph Cloud API compatible)."""
+    # Return empty list as we don't persist threads
+    return []
+
+
 @app.post("/threads/{thread_id}/runs")
 async def create_run(thread_id: str, request: Request):
     """Create a run in a thread (LangGraph Cloud API compatible)."""
@@ -285,7 +321,7 @@ async def create_run(thread_id: str, request: Request):
         # Prepare configuration
         graph_config = {
             "configurable": {
-                "model": config.get("configurable", {}).get("model", "claude-3-5-sonnet-20241022"),
+                "model": config.get("configurable", {}).get("model", "claude-haiku-4-5"),
                 "category": config.get("configurable", {}).get("category"),
                 "thread_id": thread_id
             }
@@ -342,6 +378,98 @@ async def create_run(thread_id: str, request: Request):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error creating run: {str(e)}")
+
+
+@app.post("/threads/{thread_id}/runs/stream")
+async def create_run_stream(thread_id: str, request: Request):
+    """Create a streaming run in a thread (LangGraph Cloud API compatible)."""
+    try:
+        body = await request.json()
+        print(f"[STREAM] Request body: {body}")
+
+        # Extract input from body
+        input_data = body.get("input", {})
+        messages = input_data.get("messages", [])
+        print(f"[STREAM] Messages: {messages}")
+
+        # Get configuration
+        config = body.get("config", {})
+
+        # Prepare user message
+        if messages and len(messages) > 0:
+            user_message = messages[-1].get("content", "")
+        else:
+            user_message = ""
+
+        print(f"[STREAM] User message: {user_message}")
+
+        # Prepare configuration
+        graph_config = {
+            "configurable": {
+                "model": config.get("configurable", {}).get("model", "claude-haiku-4-5"),
+                "category": config.get("configurable", {}).get("category"),
+                "thread_id": thread_id
+            }
+        }
+
+        # Prepare input for graph
+        graph_input = {
+            "messages": [{"role": "user", "content": user_message}]
+        }
+
+        print(f"[STREAM] Starting graph stream...")
+
+        # Streaming response
+        async def generate():
+            """Generate streaming response in LangGraph Cloud format."""
+            try:
+                chunk_count = 0
+                async for chunk in graph.astream(graph_input, config=graph_config):
+                    chunk_count += 1
+                    print(f"[STREAM] Chunk {chunk_count}: {chunk}")
+                    # Format as LangGraph Cloud stream event
+                    event = {
+                        "event": "values",
+                        "data": chunk
+                    }
+                    yield f"data: {json.dumps(event)}\n\n"
+
+                print(f"[STREAM] Stream completed with {chunk_count} chunks")
+
+                # Send end event
+                end_event = {
+                    "event": "end"
+                }
+                yield f"data: {json.dumps(end_event)}\n\n"
+
+            except Exception as e:
+                print(f"[STREAM ERROR] {e}")
+                import traceback
+                traceback.print_exc()
+                error_event = {
+                    "event": "error",
+                    "data": {"error": str(e)}
+                }
+                yield f"data: {json.dumps(error_event)}\n\n"
+
+        return StreamingResponse(
+            generate(),
+            media_type="text/event-stream"
+        )
+
+    except Exception as e:
+        print(f"[STREAM OUTER ERROR] {e}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Error creating streaming run: {str(e)}")
+
+
+@app.post("/threads/{thread_id}/history")
+@app.get("/threads/{thread_id}/history")
+async def get_thread_history(thread_id: str, request: Request):
+    """Get thread history (LangGraph Cloud API compatible)."""
+    # Return empty array directly (frontend expects array, not object)
+    return []
 
 
 # Run server
