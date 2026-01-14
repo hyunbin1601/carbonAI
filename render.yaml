@@ -5,7 +5,7 @@ services:
     runtime: python
     rootDir: react-agent
     buildCommand: pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt && pip install --no-cache-dir -e .
-    startCommand: langgraph up
+    startCommand: python -m react_agent.server
     healthCheckPath: /ok
     envVars:
       - key: ANTHROPIC_API_KEY
