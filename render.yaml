@@ -5,11 +5,22 @@ services:
     runtime: python
     rootDir: react-agent
     buildCommand: pip install --upgrade pip && pip install -r requirements.txt && pip install -e .
-    startCommand: python server.py
+    startCommand: langgraph up --host 0.0.0.0 --port $PORT
+    healthCheckPath: /ok
     envVars:
-      - key: OPENAI_API_KEY
+      - key: ANTHROPIC_API_KEY
         sync: false
       - key: TAVILY_API_KEY
         sync: false
-      - key: ANTHROPIC_API_KEY
+      - key: LANGSMITH_API_KEY
         sync: false
+      - key: LANGSMITH_TRACING
+        value: "true"
+      - key: LANGSMITH_PROJECT
+        value: "CarbonAI-Production"
+      - key: NETZ_MCP_URL
+        sync: false
+      - key: NETZ_MCP_ENABLED
+        value: "true"
+      - key: NETZ_ENTERPRISE_ID
+        value: "1"
