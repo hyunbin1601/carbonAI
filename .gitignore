@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# Environment files
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Claude
+.claude/
+tmpclaude-*
+
+# Temp files
+nul
+*.tmp
+*.log
+
+# Build
+dist/
+build/
+*.egg-info/
+
+# Documentation (except README)
+*.md
+!README.md
+!ARCHITECTURE.md
+!LICENSE.md
+
+# Old files
+*.jsx
+hooxibot.*
+
+# Deployment (keep config files)
+# deployment/

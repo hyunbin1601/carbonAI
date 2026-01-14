@@ -163,3 +163,17 @@ cython_debug/
 #.idea/
 
 .langgraph_api
+
+# Claude temp files
+tmpclaude-*
+nul
+
+# ChromaDB cache (regeneratable)
+chroma_db/
+
+# Development scripts
+build_vectorstore.py
+check_tool_params.py
+debug_rag_search.py
+restart_server.ps1
+run_server.ps1

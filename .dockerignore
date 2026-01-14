@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Git
+.git/
+.gitignore
+
+# Claude
+.claude/
+tmpclaude-*
+
+# Chroma DB (재생성 가능)
+react-agent/chroma_db/
+
+# Logs
+*.log
+
+# Temp files
+nul
+*.tmp
+
+# Documentation
+*.md
+!README.md
+
+# Environment (보안상 제외)
+.env
+.env.local
+
+# Test files
+tests/
+*.test.py
