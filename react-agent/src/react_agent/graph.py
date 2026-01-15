@@ -193,12 +193,20 @@ async def call_model(
             }
 
     # Get the model's response
-    response = cast(  # 전체 대화 히스토리를 펼쳐서 ai에게 전달
-        AIMessage,
-        await model.ainvoke(
-            [{"role": "system", "content": system_message}, *state.messages]
-        ),
-    ) # ainvoke는 모델을 비동기적으로 호출하고 그 결과를 반환받는 함수
+    import asyncio
+    try:
+        response = cast(  # 전체 대화 히스토리를 펼쳐서 ai에게 전달
+            AIMessage,
+            await model.ainvoke(
+                [{"role": "system", "content": system_message}, *state.messages]
+            ),
+        ) # ainvoke는 모델을 비동기적으로 호출하고 그 결과를 반환받는 함수
+    except asyncio.CancelledError:
+        print(f"[CALL_MODEL] Client disconnected during model invocation")
+        raise  # Re-raise to properly cleanup
+    except Exception as e:
+        print(f"[CALL_MODEL ERROR] {type(e).__name__}: {e}")
+        raise
 
     # Handle the case when it's the last step and the model still wants to use a tool
     # 툴을 사용해야 한다고 판단할 경우

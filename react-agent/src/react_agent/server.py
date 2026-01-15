@@ -523,6 +523,7 @@ async def create_run_stream(thread_id: str, request: Request):
         # Streaming response using standard astream
         async def generate():
             """Generate streaming response."""
+            import asyncio
             try:
                 chunk_count = 0
 
@@ -579,6 +580,10 @@ async def create_run_stream(thread_id: str, request: Request):
                 }
                 yield f"data: {json.dumps(end_event)}\n\n"
 
+            except asyncio.CancelledError:
+                print(f"[STREAM] Client disconnected (CancelledError) after {chunk_count} chunks")
+                # Don't yield error event - client already disconnected
+                raise  # Re-raise to properly cleanup
             except Exception as e:
                 print(f"[STREAM ERROR] {e}")
                 import traceback
@@ -595,6 +600,7 @@ async def create_run_stream(thread_id: str, request: Request):
             headers={
                 "Cache-Control": "no-cache",
                 "Connection": "keep-alive",
+                "X-Accel-Buffering": "no",  # Disable Nginx buffering for streaming
             }
         )
 
@@ -621,5 +627,7 @@ if __name__ == "__main__":
         host="0.0.0.0",
         port=port,
         reload=False,
-        log_level="info"
+        log_level="info",
+        timeout_keep_alive=75,  # Keep connection alive for 75 seconds
+        timeout_graceful_shutdown=30,  # Wait 30s for graceful shutdown
     )
