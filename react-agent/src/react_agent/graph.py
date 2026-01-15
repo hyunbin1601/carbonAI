@@ -143,11 +143,13 @@ async def call_model(
 
     # MCP 도구를 포함한 전체 도구 목록 가져오기
     all_tools = await get_all_tools()
+    print(f"[CALL_MODEL] Loaded {len(all_tools)} tools: {[tool.name for tool in all_tools]}")
 
     # Initialize the model with tool binding. Change the model or add more tools here.
     # ChatAnthropic 객체 생성
     llm = ChatAnthropic(temperature=0.1, model=configuration.model)
     model = llm.bind_tools(all_tools)
+    print(f"[CALL_MODEL] Model initialized with tools bound")
 
     # Format the system prompt. Customize this to change the agent's behavior.
     # 카테고리별 프롬프트 커스터마이징
