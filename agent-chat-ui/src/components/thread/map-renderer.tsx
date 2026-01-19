@@ -564,7 +564,7 @@ export function MapRenderer({ config, className }: MapRendererProps) {
           ref={deckRef}
           viewState={viewState}
           onViewStateChange={handleViewStateChange}
-          controller={true}
+          controller={false}
           layers={mapLoaded ? layers : []}
           onHover={handleHover}
           getTooltip={() => null}
@@ -578,6 +578,13 @@ export function MapRenderer({ config, className }: MapRendererProps) {
             ref={mapRef}
             reuseMaps={true}
             mapStyle={mapStyle}
+            dragPan={false}
+            dragRotate={false}
+            scrollZoom={false}
+            doubleClickZoom={false}
+            touchZoomRotate={false}
+            touchPitch={false}
+            keyboard={false}
             onLoad={() => {
               setTimeout(() => setMapLoaded(true), 100);
             }}
