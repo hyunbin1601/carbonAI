@@ -11,7 +11,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 
 // 전역 활성 맵 관리 (WebGL 컨텍스트 제한 준수)
 const activeMapInstances = new Set<string>();
-const MAX_ACTIVE_MAPS = 3; // 최대 3개 맵만 동시 활성화
+const MAX_ACTIVE_MAPS = 1; // 최대 1개 맵만 동시 활성화 (각 맵은 2개 WebGL context 사용)
 
 const registerMap = (id: string): boolean => {
   if (activeMapInstances.size >= MAX_ACTIVE_MAPS && !activeMapInstances.has(id)) {
@@ -123,20 +123,31 @@ export function MapRenderer({ config, className }: MapRendererProps) {
             setIsInView(true);
 
             // 초기 체크 시 약간의 지연 추가 (동시 로드 방지)
-            const activationDelay = initialCheckDone ? 0 : Math.random() * 200;
+            const activationDelay = initialCheckDone ? 0 : Math.random() * 300;
 
             setTimeout(() => {
               // 활성화 시도
               const canRegister = registerMap(instanceId);
-              setCanActivate(canRegister);
-              setIsReady(true); // 체크 완료
 
-              // 등록 실패 시 재시도 (다른 맵이 언마운트되면)
-              if (!canRegister) {
+              if (canRegister) {
+                // 등록 성공 - 다음 프레임에서 렌더링 시작 (WebGL context 생성 지연)
+                setCanActivate(true);
+                requestAnimationFrame(() => {
+                  setIsReady(true);
+                });
+              } else {
+                // 등록 실패 - placeholder 표시
+                setCanActivate(false);
+                setIsReady(true);
+
+                // 재시도 (다른 맵이 언마운트되면)
                 retryInterval = setInterval(() => {
                   const retry = registerMap(instanceId);
                   if (retry) {
                     setCanActivate(true);
+                    requestAnimationFrame(() => {
+                      setIsReady(true);
+                    });
                     if (retryInterval) clearInterval(retryInterval);
                   }
                 }, 500);
