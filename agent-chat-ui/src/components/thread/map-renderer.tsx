@@ -95,6 +95,7 @@ export function MapRenderer({ config, className }: MapRendererProps) {
   const [viewState, setViewState] = useState(DEFAULT_VIEW_STATE);
   const [isInView, setIsInView] = useState(false);
   const [canActivate, setCanActivate] = useState(false);
+  const [isReady, setIsReady] = useState(false); // 초기 로드 완료 플래그
 
   // DeckGL 및 Map 인스턴스 ref
   const deckRef = useRef<any>(null);
@@ -110,6 +111,7 @@ export function MapRenderer({ config, className }: MapRendererProps) {
 
     let retryInterval: NodeJS.Timeout | null = null;
     let retryTimeout: NodeJS.Timeout | null = null;
+    let initialCheckDone = false;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -119,30 +121,40 @@ export function MapRenderer({ config, className }: MapRendererProps) {
           if (isVisible) {
             // 뷰포트에 들어올 때만 상태 업데이트
             setIsInView(true);
-            // 활성화 시도
-            const canRegister = registerMap(instanceId);
-            setCanActivate(canRegister);
 
-            // 등록 실패 시 재시도 (다른 맵이 언마운트되면)
-            if (!canRegister) {
-              retryInterval = setInterval(() => {
-                const retry = registerMap(instanceId);
-                if (retry) {
-                  setCanActivate(true);
+            // 초기 체크 시 약간의 지연 추가 (동시 로드 방지)
+            const activationDelay = initialCheckDone ? 0 : Math.random() * 200;
+
+            setTimeout(() => {
+              // 활성화 시도
+              const canRegister = registerMap(instanceId);
+              setCanActivate(canRegister);
+              setIsReady(true); // 체크 완료
+
+              // 등록 실패 시 재시도 (다른 맵이 언마운트되면)
+              if (!canRegister) {
+                retryInterval = setInterval(() => {
+                  const retry = registerMap(instanceId);
+                  if (retry) {
+                    setCanActivate(true);
+                    if (retryInterval) clearInterval(retryInterval);
+                  }
+                }, 500);
+
+                // 5초 후 포기
+                retryTimeout = setTimeout(() => {
                   if (retryInterval) clearInterval(retryInterval);
-                }
-              }, 500);
+                }, 5000);
+              }
+            }, activationDelay);
 
-              // 5초 후 포기
-              retryTimeout = setTimeout(() => {
-                if (retryInterval) clearInterval(retryInterval);
-              }, 5000);
-            }
+            initialCheckDone = true;
           } else {
             // 뷰포트에서 벗어날 때 즉시 정리
             setIsInView(false);
             unregisterMap(instanceId);
             setCanActivate(false);
+            setIsReady(true); // 체크는 완료됨
 
             // 재시도 타이머 정리
             if (retryInterval) clearInterval(retryInterval);
@@ -156,9 +168,15 @@ export function MapRenderer({ config, className }: MapRendererProps) {
       }
     );
 
-    observer.observe(containerRef.current);
+    // 초기 체크를 위해 약간 지연 후 observe 시작
+    const startDelay = setTimeout(() => {
+      if (containerRef.current) {
+        observer.observe(containerRef.current);
+      }
+    }, 50);
 
     return () => {
+      clearTimeout(startDelay);
       observer.disconnect();
       unregisterMap(instanceId);
       if (retryInterval) clearInterval(retryInterval);
@@ -438,6 +456,30 @@ export function MapRenderer({ config, className }: MapRendererProps) {
       >
         <div className="text-center text-sm text-muted-foreground py-4">
           맵 렌더링 중...
+        </div>
+      </div>
+    );
+  }
+
+  // 초기 체크 완료 전까지는 무조건 placeholder (동시 로드 방지)
+  if (!isReady) {
+    return (
+      <div
+        ref={containerRef}
+        className={cn(
+          "rounded-xl bg-muted/50 dark:bg-zinc-900 p-4 border border-border/30 dark:border-zinc-700",
+          className
+        )}
+      >
+        <div className="relative w-full h-[500px] flex items-center justify-center">
+          <div className="text-center">
+            <div className="text-sm text-muted-foreground mb-2">
+              🗺️ 지도 준비 중...
+            </div>
+            <div className="text-xs text-muted-foreground/70">
+              WebGL 리소스 최적화를 위해 순차적으로 로드됩니다
+            </div>
+          </div>
         </div>
       </div>
     );
