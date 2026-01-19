@@ -90,10 +90,13 @@ export function MapRenderer({ config, className }: MapRendererProps) {
     return () => {
       setMapLoaded(false);
 
-      // Map 리소스 정리
-      if (mapRef.current) {
+      // Map 리소스 정리 - ref를 지역 변수로 복사
+      const currentMapRef = mapRef.current;
+      const currentDeckRef = deckRef.current;
+
+      if (currentMapRef) {
         try {
-          const mapInstance = mapRef.current.getMap();
+          const mapInstance = currentMapRef.getMap();
           if (mapInstance) {
             mapInstance.remove();
           }
@@ -103,9 +106,9 @@ export function MapRenderer({ config, className }: MapRendererProps) {
       }
 
       // DeckGL 리소스 정리
-      if (deckRef.current) {
+      if (currentDeckRef) {
         try {
-          deckRef.current.finalize();
+          currentDeckRef.finalize();
         } catch (e) {
           console.warn('DeckGL cleanup warning:', e);
         }
@@ -386,7 +389,6 @@ export function MapRenderer({ config, className }: MapRendererProps) {
             ref={mapRef}
             reuseMaps
             mapStyle={mapStyle}
-            preventStyleDiffing={true}
             onLoad={() => {
               setTimeout(() => setMapLoaded(true), 100);
             }}
