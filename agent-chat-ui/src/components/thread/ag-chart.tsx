@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AgChartsReact } from "ag-charts-react";
+import { AgCharts } from "ag-charts-react";
 import type { AgChartOptions } from "ag-charts-community";
 import { cn } from "@/lib/utils";
 
@@ -85,7 +85,7 @@ export function AGChart({ config, className }: AGChartProps) {
         className
       )}
     >
-      <AgChartsReact options={chartOptions} />
+      <AgCharts options={chartOptions} />
     </div>
   );
 }
