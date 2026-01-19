@@ -44,6 +44,24 @@ const DEFAULT_VIEW_STATE = {
 const LIGHT_MAP_STYLE = "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json";
 const DARK_MAP_STYLE = "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
 
+// 개선된 색상 팔레트 (라이트/다크 모드 최적화)
+const COLOR_PALETTES = {
+  light: {
+    scatterplot: [59, 130, 246, 200],      // Blue
+    path: [239, 68, 68, 200],              // Red
+    polygon: [34, 197, 94, 150],           // Green
+    hexagon: [168, 85, 247, 180],          // Purple
+    geojson: [249, 115, 22, 180],          // Orange
+  },
+  dark: {
+    scatterplot: [96, 165, 250, 220],      // Light Blue
+    path: [248, 113, 113, 220],            // Light Red
+    polygon: [74, 222, 128, 170],          // Light Green
+    hexagon: [196, 181, 253, 200],         // Light Purple
+    geojson: [251, 146, 60, 200],          // Light Orange
+  },
+};
+
 export function MapRenderer({ config, className }: MapRendererProps) {
   const [mapConfig, setMapConfig] = useState<MapConfig | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -56,6 +74,9 @@ export function MapRenderer({ config, className }: MapRendererProps) {
     original: number;
     sampled: number;
   } | null>(null);
+  const [layersVisible, setLayersVisible] = useState<boolean[]>([]);
+  const [showLegend, setShowLegend] = useState(true);
+  const [viewState, setViewState] = useState(DEFAULT_VIEW_STATE);
 
   // DeckGL 인스턴스 ref
   const deckRef = useRef<any>(null);
@@ -108,6 +129,15 @@ export function MapRenderer({ config, className }: MapRendererProps) {
       }
 
       setMapConfig(parsedConfig);
+      // 레이어 가시성 초기화 (모두 보이도록)
+      if (parsedConfig.layers) {
+        setLayersVisible(new Array(parsedConfig.layers.length).fill(true));
+      }
+      // 초기 뷰 상태 설정
+      setViewState({
+        ...DEFAULT_VIEW_STATE,
+        ...parsedConfig.initialViewState,
+      });
       setIsLoading(false);
     } catch (err) {
       console.error("Map config parsing error:", err);
@@ -131,7 +161,12 @@ export function MapRenderer({ config, className }: MapRendererProps) {
     let totalOriginal = 0;
     let totalSampled = 0;
 
+    const palette = isDarkMode ? COLOR_PALETTES.dark : COLOR_PALETTES.light;
+
     const createdLayers = mapConfig.layers.map((layerConfig, index) => {
+      // 레이어가 숨겨진 경우 스킵
+      if (!layersVisible[index]) return null;
+
       // type과 data를 제외한 나머지 속성만 추출
       const { type, data, ...otherProps } = layerConfig;
 
@@ -157,7 +192,7 @@ export function MapRenderer({ config, className }: MapRendererProps) {
             ...commonProps,
             getPosition: (d: any) => d.position || [d.longitude, d.latitude],
             getRadius: (d: any) => d.radius || 100,
-            getFillColor: (d: any) => d.color || [255, 140, 0, 180],
+            getFillColor: (d: any) => d.color || palette.scatterplot,
             radiusMinPixels: layerConfig.radiusMinPixels || 5,
             radiusMaxPixels: layerConfig.radiusMaxPixels || 30,
           });
@@ -166,7 +201,7 @@ export function MapRenderer({ config, className }: MapRendererProps) {
           return new PathLayer({
             ...commonProps,
             getPath: (d: any) => d.path,
-            getColor: (d: any) => d.color || [255, 0, 0, 200],
+            getColor: (d: any) => d.color || palette.path,
             getWidth: (d: any) => d.width || 5,
             widthMinPixels: layerConfig.widthMinPixels || 2,
           });
@@ -175,8 +210,8 @@ export function MapRenderer({ config, className }: MapRendererProps) {
           return new PolygonLayer({
             ...commonProps,
             getPolygon: (d: any) => d.polygon,
-            getFillColor: (d: any) => d.fillColor || [0, 200, 0, 100],
-            getLineColor: (d: any) => d.lineColor || [0, 0, 0, 255],
+            getFillColor: (d: any) => d.fillColor || palette.polygon,
+            getLineColor: (d: any) => d.lineColor || (isDarkMode ? [255, 255, 255, 100] : [0, 0, 0, 100]),
             getLineWidth: layerConfig.lineWidth || 1,
             filled: true,
             extruded: layerConfig.extruded || false,
@@ -202,8 +237,8 @@ export function MapRenderer({ config, className }: MapRendererProps) {
             ...commonProps,
             filled: true,
             stroked: true,
-            getFillColor: (d: any) => d.properties?.fillColor || [160, 160, 180, 200],
-            getLineColor: (d: any) => d.properties?.lineColor || [0, 0, 0, 255],
+            getFillColor: (d: any) => d.properties?.fillColor || palette.geojson,
+            getLineColor: (d: any) => d.properties?.lineColor || (isDarkMode ? [255, 255, 255, 100] : [0, 0, 0, 100]),
             getLineWidth: layerConfig.lineWidth || 1,
             pointRadiusMinPixels: 3,
             pointRadiusMaxPixels: 10,
@@ -222,7 +257,7 @@ export function MapRenderer({ config, className }: MapRendererProps) {
     }
 
     return createdLayers;
-  }, [mapConfig]);
+  }, [mapConfig, isDarkMode, layersVisible]);
 
   // 툴팁 정보
   const handleHover = (info: PickingInfo) => {
@@ -260,12 +295,44 @@ export function MapRenderer({ config, className }: MapRendererProps) {
     );
   }
 
-  const viewState = {
-    ...DEFAULT_VIEW_STATE,
-    ...mapConfig.initialViewState,
+  const mapStyle = mapConfig.style || (isDarkMode ? DARK_MAP_STYLE : LIGHT_MAP_STYLE);
+
+  // 컨트롤 함수들
+  const handleZoomIn = () => {
+    setViewState(prev => ({ ...prev, zoom: Math.min(prev.zoom + 1, 20) }));
   };
 
-  const mapStyle = mapConfig.style || (isDarkMode ? DARK_MAP_STYLE : LIGHT_MAP_STYLE);
+  const handleZoomOut = () => {
+    setViewState(prev => ({ ...prev, zoom: Math.max(prev.zoom - 1, 0) }));
+  };
+
+  const handleResetView = () => {
+    setViewState({
+      ...DEFAULT_VIEW_STATE,
+      ...mapConfig?.initialViewState,
+    });
+  };
+
+  const toggleLayer = (index: number) => {
+    setLayersVisible(prev => {
+      const newVisible = [...prev];
+      newVisible[index] = !newVisible[index];
+      return newVisible;
+    });
+  };
+
+  // 툴팁 데이터 포맷팅
+  const formatTooltipData = (obj: any) => {
+    if (!obj) return null;
+
+    const entries = Object.entries(obj).filter(([key]) =>
+      !key.startsWith('_') && key !== 'index'
+    );
+
+    if (entries.length === 0) return null;
+
+    return entries.slice(0, 8); // 최대 8개 항목만 표시
+  };
 
   // WebGL 지원 체크
   if (typeof window !== 'undefined') {
@@ -290,7 +357,8 @@ export function MapRenderer({ config, className }: MapRendererProps) {
       <div className="relative w-full h-[500px]">
         <DeckGL
           ref={deckRef}
-          initialViewState={viewState}
+          viewState={viewState}
+          onViewStateChange={({ viewState }: any) => setViewState(viewState)}
           controller={true}
           layers={mapLoaded ? layers : []}
           onHover={handleHover}
@@ -305,28 +373,120 @@ export function MapRenderer({ config, className }: MapRendererProps) {
           />
         </DeckGL>
 
-        {/* 툴팁 */}
-        {mapConfig.tooltip !== false && hoveredObject && (
-          <div
-            className="absolute bottom-4 left-4 bg-white dark:bg-zinc-800 p-3 rounded-lg shadow-lg border border-border/50 max-w-xs"
-            style={{ pointerEvents: "none" }}
+        {/* 개선된 툴팁 */}
+        {mapConfig.tooltip !== false && hoveredObject && (() => {
+          const tooltipData = formatTooltipData(hoveredObject);
+          return tooltipData && (
+            <div
+              className="absolute bottom-4 left-4 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-sm p-4 rounded-xl shadow-2xl border border-border/50 dark:border-zinc-700/50 max-w-sm animate-in fade-in slide-in-from-bottom-2 duration-200"
+              style={{ pointerEvents: "none" }}
+            >
+              <div className="space-y-2">
+                {tooltipData.map(([key, value], idx) => (
+                  <div key={idx} className="flex justify-between gap-4 text-sm">
+                    <span className="font-medium text-muted-foreground capitalize">
+                      {key.replace(/([A-Z])/g, ' $1').trim()}:
+                    </span>
+                    <span className="text-foreground font-semibold text-right">
+                      {typeof value === 'number' ? value.toLocaleString() : String(value)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
+
+        {/* 줌 컨트롤 */}
+        <div className="absolute top-4 right-4 flex flex-col gap-2">
+          <button
+            onClick={handleZoomIn}
+            className="bg-white dark:bg-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-700 p-2 rounded-lg shadow-lg border border-border/50 dark:border-zinc-700/50 transition-colors"
+            title="Zoom In"
           >
-            <pre className="text-xs text-foreground overflow-x-auto">
-              {JSON.stringify(hoveredObject, null, 2)}
-            </pre>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+          </button>
+          <button
+            onClick={handleZoomOut}
+            className="bg-white dark:bg-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-700 p-2 rounded-lg shadow-lg border border-border/50 dark:border-zinc-700/50 transition-colors"
+            title="Zoom Out"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+            </svg>
+          </button>
+          <button
+            onClick={handleResetView}
+            className="bg-white dark:bg-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-700 p-2 rounded-lg shadow-lg border border-border/50 dark:border-zinc-700/50 transition-colors"
+            title="Reset View"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+          </button>
+          <button
+            onClick={() => setShowLegend(!showLegend)}
+            className="bg-white dark:bg-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-700 p-2 rounded-lg shadow-lg border border-border/50 dark:border-zinc-700/50 transition-colors"
+            title="Toggle Legend"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+
+        {/* 레이어 범례 */}
+        {showLegend && mapConfig.layers && mapConfig.layers.length > 0 && (
+          <div className="absolute top-4 left-4 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-sm p-4 rounded-xl shadow-lg border border-border/50 dark:border-zinc-700/50 max-w-xs animate-in fade-in slide-in-from-left-2 duration-200">
+            <h3 className="text-sm font-semibold mb-3 text-foreground">Layers</h3>
+            <div className="space-y-2">
+              {mapConfig.layers.map((layer, index) => {
+                const palette = isDarkMode ? COLOR_PALETTES.dark : COLOR_PALETTES.light;
+                const color = palette[layer.type as keyof typeof palette] || [128, 128, 128, 200];
+                const rgbaColor = `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3] / 255})`;
+
+                return (
+                  <label
+                    key={index}
+                    className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-800 p-2 rounded-lg transition-colors"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={layersVisible[index]}
+                      onChange={() => toggleLayer(index)}
+                      className="rounded border-gray-300"
+                    />
+                    <div
+                      className="w-4 h-4 rounded-sm border border-border/50"
+                      style={{ backgroundColor: rgbaColor }}
+                    />
+                    <span className="text-xs text-foreground capitalize">
+                      {layer.type} ({Array.isArray(layer.data) ? layer.data.length : 0})
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
           </div>
         )}
 
-        {/* 샘플링 경고 */}
+        {/* 개선된 샘플링 경고 */}
         {dataSamplingInfo && (
-          <div className="absolute top-4 right-4 bg-yellow-100 dark:bg-yellow-900/50 text-yellow-900 dark:text-yellow-100 p-2 rounded-lg shadow-lg border border-yellow-500/30 text-xs">
-            <p className="font-semibold">⚠️ 데이터 샘플링됨</p>
-            <p className="mt-1">
-              원본: {dataSamplingInfo.original.toLocaleString()}개 → 표시: {dataSamplingInfo.sampled.toLocaleString()}개
-            </p>
-            <p className="mt-1 text-[10px] opacity-80">
-              성능을 위해 데이터가 샘플링되었습니다
-            </p>
+          <div className="absolute bottom-4 right-4 bg-yellow-50/95 dark:bg-yellow-900/30 backdrop-blur-sm text-yellow-900 dark:text-yellow-100 p-3 rounded-xl shadow-lg border border-yellow-500/30 dark:border-yellow-500/20 text-xs max-w-[240px] animate-in fade-in slide-in-from-bottom-2 duration-200">
+            <div className="flex items-start gap-2">
+              <span className="text-base">⚠️</span>
+              <div className="flex-1">
+                <p className="font-semibold mb-1">데이터 샘플링됨</p>
+                <p className="text-[11px] opacity-90">
+                  {dataSamplingInfo.original.toLocaleString()}개 → {dataSamplingInfo.sampled.toLocaleString()}개 표시
+                </p>
+                <p className="mt-1 text-[10px] opacity-70">
+                  성능 최적화를 위해 샘플링됨
+                </p>
+              </div>
+            </div>
           </div>
         )}
       </div>
