@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { AgCharts } from "ag-charts-react";
-import { AgChartOptions } from "ag-charts-community";
+import * as agCharts from "ag-charts-community";
+import type { AgChartOptions } from "ag-charts-community";
 import { cn } from "@/lib/utils";
 
 interface AGChartProps {
@@ -11,14 +11,17 @@ interface AGChartProps {
 }
 
 export function AGChart({ config, className }: AGChartProps) {
-  const [chartOptions, setChartOptions] = useState<AgChartOptions | null>(null);
+  const chartRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    if (!chartRef.current) return;
+
     setIsLoading(true);
     setError(null);
-    setChartOptions(null);
+
+    let chart: any;
 
     try {
       let options: AgChartOptions;
@@ -32,19 +35,28 @@ export function AGChart({ config, className }: AGChartProps) {
 
       // 기본 테마 및 스타일 적용
       const defaultOptions: AgChartOptions = {
+        container: chartRef.current,
         background: {
           fill: "transparent",
         },
         ...options,
       };
 
-      setChartOptions(defaultOptions);
+      // AG Charts 직접 생성
+      chart = agCharts.AgCharts.create(defaultOptions);
       setIsLoading(false);
     } catch (err) {
       console.error("AG Chart parsing error:", err);
       setError(err instanceof Error ? err.message : "차트를 렌더링할 수 없습니다.");
       setIsLoading(false);
     }
+
+    // Cleanup
+    return () => {
+      if (chart) {
+        chart.destroy();
+      }
+    };
   }, [config]);
 
   if (error) {
@@ -63,21 +75,6 @@ export function AGChart({ config, className }: AGChartProps) {
     );
   }
 
-  if (isLoading || !chartOptions) {
-    return (
-      <div
-        className={cn(
-          "rounded-xl bg-muted/50 dark:bg-zinc-900 p-4 border border-border/30 dark:border-zinc-700",
-          className
-        )}
-      >
-        <div className="text-center text-sm text-muted-foreground py-4">
-          차트 렌더링 중...
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div
       className={cn(
@@ -85,7 +82,12 @@ export function AGChart({ config, className }: AGChartProps) {
         className
       )}
     >
-      <AgCharts options={chartOptions} />
+      {isLoading && (
+        <div className="text-center text-sm text-muted-foreground py-4">
+          차트 렌더링 중...
+        </div>
+      )}
+      <div ref={chartRef} className="w-full h-[400px]" />
     </div>
   );
 }
