@@ -35,6 +35,12 @@ export function AGChart({ config, className }: AGChartProps) {
         background: {
           fill: "transparent",
         },
+        padding: {
+          top: 20,
+          right: 20,
+          bottom: 20,
+          left: 20,
+        },
         ...options,
       };
 
@@ -81,11 +87,13 @@ export function AGChart({ config, className }: AGChartProps) {
   return (
     <div
       className={cn(
-        "ag-chart-container rounded-xl bg-muted/50 dark:bg-zinc-900 p-4 border border-border/30 dark:border-zinc-700 h-[450px]",
+        "ag-chart-container rounded-xl bg-white dark:bg-zinc-900/50 p-6 border border-border/50 dark:border-zinc-700/50 shadow-sm",
         className
       )}
     >
-      <AgCharts options={chartOptions} />
+      <div className="w-full h-[400px] min-h-[300px]">
+        <AgCharts options={chartOptions} />
+      </div>
     </div>
   );
 }

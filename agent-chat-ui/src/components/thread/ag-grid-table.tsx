@@ -56,6 +56,8 @@ export function AGGridTable({ config, className }: AGGridTableProps) {
       sortable: true,
       filter: true,
       resizable: true,
+      flex: 1,
+      minWidth: 100,
     }),
     []
   );
@@ -94,17 +96,18 @@ export function AGGridTable({ config, className }: AGGridTableProps) {
   return (
     <div
       className={cn(
-        "ag-grid-container rounded-xl bg-muted/50 dark:bg-zinc-900 p-4 border border-border/30 dark:border-zinc-700",
+        "ag-grid-container rounded-xl bg-white dark:bg-zinc-900/50 p-6 border border-border/50 dark:border-zinc-700/50 shadow-sm",
         className
       )}
     >
-      <div className="ag-theme-quartz" style={{ height: 400, width: "100%" }}>
+      <div className="ag-theme-quartz w-full" style={{ width: "100%" }}>
         <AgGridReact
           columnDefs={gridConfig.columnDefs}
           rowData={gridConfig.rowData}
           defaultColDef={defaultColDef}
           pagination={true}
           paginationPageSize={10}
+          paginationPageSizeSelector={[10, 20, 50, 100]}
           domLayout="autoHeight"
         />
       </div>
