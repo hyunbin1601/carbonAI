@@ -78,8 +78,9 @@ export function MapRenderer({ config, className }: MapRendererProps) {
   const [showLegend, setShowLegend] = useState(true);
   const [viewState, setViewState] = useState(DEFAULT_VIEW_STATE);
 
-  // DeckGL 인스턴스 ref
+  // DeckGL 및 Map 인스턴스 ref
   const deckRef = useRef<any>(null);
+  const mapRef = useRef<any>(null);
 
   // 클라이언트 마운트 체크
   useEffect(() => {
@@ -87,6 +88,21 @@ export function MapRenderer({ config, className }: MapRendererProps) {
 
     // cleanup: 컴포넌트 언마운트 시 WebGL 리소스 정리
     return () => {
+      setMapLoaded(false);
+
+      // Map 리소스 정리
+      if (mapRef.current) {
+        try {
+          const mapInstance = mapRef.current.getMap();
+          if (mapInstance) {
+            mapInstance.remove();
+          }
+        } catch (e) {
+          console.warn('Map cleanup warning:', e);
+        }
+      }
+
+      // DeckGL 리소스 정리
       if (deckRef.current) {
         try {
           deckRef.current.finalize();
@@ -118,6 +134,7 @@ export function MapRenderer({ config, className }: MapRendererProps) {
     setIsLoading(true);
     setError(null);
     setMapConfig(null);
+    setMapLoaded(false); // 새 config 로딩 시 맵 로드 상태 초기화
 
     try {
       let parsedConfig: MapConfig;
@@ -366,9 +383,15 @@ export function MapRenderer({ config, className }: MapRendererProps) {
           useDevicePixels={1}
         >
           <Map
+            ref={mapRef}
+            reuseMaps
             mapStyle={mapStyle}
+            preventStyleDiffing={true}
             onLoad={() => {
               setTimeout(() => setMapLoaded(true), 100);
+            }}
+            onRemove={() => {
+              setMapLoaded(false);
             }}
           />
         </DeckGL>
