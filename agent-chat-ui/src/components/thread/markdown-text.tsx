@@ -9,6 +9,8 @@ import remarkMath from "remark-math";
 import { FC, memo, useState } from "react";
 import { CheckIcon, CopyIcon } from "lucide-react";
 import { SyntaxHighlighter } from "@/components/thread/syntax-highlighter";
+import { AGChart } from "@/components/thread/ag-chart";
+import { AGGridTable } from "@/components/thread/ag-grid-table";
 
 import { TooltipIconButton } from "@/components/thread/tooltip-icon-button";
 import { cn } from "@/lib/utils";
@@ -215,6 +217,16 @@ const defaultComponents: Record<string, unknown> = {
     if (match) {
       const language = match[1];
       const code = String(children).replace(/\n$/, "");
+
+      // AG Chart 렌더링
+      if (language === "agchart") {
+        return <AGChart config={code} />;
+      }
+
+      // AG Grid 렌더링
+      if (language === "aggrid") {
+        return <AGGridTable config={code} />;
+      }
 
       // Mermaid 코드는 일반 코드 블록으로 표시
       if (language === "mermaid") {

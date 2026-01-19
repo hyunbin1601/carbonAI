@@ -11,17 +11,16 @@ from pydantic import BaseModel, Field
 import uvicorn
 from dotenv import load_dotenv
 
-from react_agent.graph import graph
-from react_agent.configuration import Configuration
-from langchain_core.messages import AIMessage, HumanMessage
+from react_agent.graph import graph   # 기존 langgraph 그래프 임포트
+from react_agent.configuration import Configuration  # 기존 설정 클래스
+from langchain_core.messages import AIMessage, HumanMessage   # 랭체인 메세지 타입 임포트
 
 # Load environment variables
 load_dotenv()
 
 
 # Helper function to convert LangChain messages to JSON-serializable format
-def message_to_dict(msg):
-    """Convert a LangChain message to a JSON-serializable dictionary."""
+def message_to_dict(msg):  # 랭체인 메세지를 json으로 변환 -> 프론트엔드 sdk 형식 / 호환을 위함
 
     # CRITICAL: Extract content BEFORE serialization to avoid "complex" conversion
     # LangChain's dict()/model_dump() converts list content to "complex" string
