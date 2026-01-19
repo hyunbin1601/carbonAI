@@ -108,25 +108,50 @@ export function MapRenderer({ config, className }: MapRendererProps) {
   useEffect(() => {
     if (!containerRef.current) return;
 
+    let retryInterval: NodeJS.Timeout | null = null;
+    let retryTimeout: NodeJS.Timeout | null = null;
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           const isVisible = entry.isIntersecting;
-          setIsInView(isVisible);
 
           if (isVisible) {
-            // 뷰포트에 들어올 때 활성화 시도
+            // 뷰포트에 들어올 때만 상태 업데이트
+            setIsInView(true);
+            // 활성화 시도
             const canRegister = registerMap(instanceId);
             setCanActivate(canRegister);
+
+            // 등록 실패 시 재시도 (다른 맵이 언마운트되면)
+            if (!canRegister) {
+              retryInterval = setInterval(() => {
+                const retry = registerMap(instanceId);
+                if (retry) {
+                  setCanActivate(true);
+                  if (retryInterval) clearInterval(retryInterval);
+                }
+              }, 500);
+
+              // 5초 후 포기
+              retryTimeout = setTimeout(() => {
+                if (retryInterval) clearInterval(retryInterval);
+              }, 5000);
+            }
           } else {
-            // 뷰포트에서 벗어날 때 등록 해제
+            // 뷰포트에서 벗어날 때 즉시 정리
+            setIsInView(false);
             unregisterMap(instanceId);
             setCanActivate(false);
+
+            // 재시도 타이머 정리
+            if (retryInterval) clearInterval(retryInterval);
+            if (retryTimeout) clearTimeout(retryTimeout);
           }
         });
       },
       {
-        rootMargin: '50px', // 50px 전에 미리 로드 (100px에서 줄임)
+        rootMargin: '50px',
         threshold: 0.1,
       }
     );
@@ -136,6 +161,8 @@ export function MapRenderer({ config, className }: MapRendererProps) {
     return () => {
       observer.disconnect();
       unregisterMap(instanceId);
+      if (retryInterval) clearInterval(retryInterval);
+      if (retryTimeout) clearTimeout(retryTimeout);
     };
   }, [instanceId]);
 
