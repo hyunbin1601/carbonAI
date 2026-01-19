@@ -1,5 +1,5 @@
 "use client";
-
+// ai의 마크다운 응답을 파싱하고 적절한 컴포넌트로 렌더링함
 import "./markdown-styles.css";
 
 import ReactMarkdown from "react-markdown";
@@ -11,6 +11,13 @@ import { CheckIcon, CopyIcon } from "lucide-react";
 import { SyntaxHighlighter } from "@/components/thread/syntax-highlighter";
 import { AGChart } from "@/components/thread/ag-chart";
 import { AGGridTable } from "@/components/thread/ag-grid-table";
+import dynamic from "next/dynamic";
+
+// MapRenderer를 클라이언트 전용으로 동적 로드
+const MapRenderer = dynamic(
+  () => import("@/components/thread/map-renderer").then((mod) => mod.MapRenderer),
+  { ssr: false, loading: () => <div className="h-[500px] flex items-center justify-center">맵 로딩 중...</div> }
+);
 
 import { TooltipIconButton } from "@/components/thread/tooltip-icon-button";
 import { cn } from "@/lib/utils";
@@ -226,6 +233,11 @@ const defaultComponents: Record<string, unknown> = {
       // AG Grid 렌더링
       if (language === "aggrid") {
         return <AGGridTable config={code} />;
+      }
+
+      // Map 렌더링
+      if (language === "map" || language === "geomap" || language === "deckgl") {
+        return <MapRenderer config={code} />;
       }
 
       // Mermaid 코드는 일반 코드 블록으로 표시
