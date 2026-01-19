@@ -9,6 +9,22 @@ import type { Layer, PickingInfo } from "@deck.gl/core";
 import { cn } from "@/lib/utils";
 import "maplibre-gl/dist/maplibre-gl.css";
 
+// 전역 활성 맵 관리 (WebGL 컨텍스트 제한 준수)
+const activeMapInstances = new Set<string>();
+const MAX_ACTIVE_MAPS = 3; // 최대 3개 맵만 동시 활성화
+
+const registerMap = (id: string): boolean => {
+  if (activeMapInstances.size >= MAX_ACTIVE_MAPS && !activeMapInstances.has(id)) {
+    return false; // 제한 초과
+  }
+  activeMapInstances.add(id);
+  return true;
+};
+
+const unregisterMap = (id: string) => {
+  activeMapInstances.delete(id);
+};
+
 interface MapConfig {
   initialViewState?: {
     longitude?: number;
@@ -78,6 +94,7 @@ export function MapRenderer({ config, className }: MapRendererProps) {
   const [showLegend, setShowLegend] = useState(true);
   const [viewState, setViewState] = useState(DEFAULT_VIEW_STATE);
   const [isInView, setIsInView] = useState(false);
+  const [canActivate, setCanActivate] = useState(false);
 
   // DeckGL 및 Map 인스턴스 ref
   const deckRef = useRef<any>(null);
@@ -87,18 +104,29 @@ export function MapRenderer({ config, className }: MapRendererProps) {
   // 컴포넌트 고유 ID (재렌더링 시에도 유지)
   const instanceId = useRef(`map-${Math.random().toString(36).substr(2, 9)}`).current;
 
-  // Intersection Observer로 뷰포트 감지 (WebGL 컨텍스트 최적화)
+  // Intersection Observer + 전역 맵 카운터로 WebGL 컨텍스트 최적화
   useEffect(() => {
     if (!containerRef.current) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          setIsInView(entry.isIntersecting);
+          const isVisible = entry.isIntersecting;
+          setIsInView(isVisible);
+
+          if (isVisible) {
+            // 뷰포트에 들어올 때 활성화 시도
+            const canRegister = registerMap(instanceId);
+            setCanActivate(canRegister);
+          } else {
+            // 뷰포트에서 벗어날 때 등록 해제
+            unregisterMap(instanceId);
+            setCanActivate(false);
+          }
         });
       },
       {
-        rootMargin: '100px', // 100px 전에 미리 로드
+        rootMargin: '50px', // 50px 전에 미리 로드 (100px에서 줄임)
         threshold: 0.1,
       }
     );
@@ -107,8 +135,9 @@ export function MapRenderer({ config, className }: MapRendererProps) {
 
     return () => {
       observer.disconnect();
+      unregisterMap(instanceId);
     };
-  }, []);
+  }, [instanceId]);
 
   // 클라이언트 마운트 체크
   useEffect(() => {
@@ -387,8 +416,15 @@ export function MapRenderer({ config, className }: MapRendererProps) {
     );
   }
 
-  // 뷰포트에 보이지 않으면 placeholder만 표시 (WebGL 컨텍스트 절약)
-  if (!isInView) {
+  // 뷰포트에 보이지 않거나 활성화 제한 초과 시 placeholder 표시
+  if (!isInView || !canActivate) {
+    const message = !isInView
+      ? "🗺️ 지도 (스크롤하여 활성화)"
+      : "⏳ 대기 중 (다른 지도 닫으면 활성화)";
+    const subMessage = !isInView
+      ? "WebGL 리소스 절약을 위해 뷰포트 내에서만 렌더링됩니다"
+      : `최대 ${MAX_ACTIVE_MAPS}개 지도만 동시 활성화 가능 (현재: ${activeMapInstances.size}/${MAX_ACTIVE_MAPS})`;
+
     return (
       <div
         ref={containerRef}
@@ -400,10 +436,10 @@ export function MapRenderer({ config, className }: MapRendererProps) {
         <div className="relative w-full h-[500px] flex items-center justify-center">
           <div className="text-center">
             <div className="text-sm text-muted-foreground mb-2">
-              🗺️ 지도 (스크롤하여 활성화)
+              {message}
             </div>
             <div className="text-xs text-muted-foreground/70">
-              WebGL 리소스 절약을 위해 뷰포트 내에서만 렌더링됩니다
+              {subMessage}
             </div>
           </div>
         </div>
