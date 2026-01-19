@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import Map from "react-map-gl/maplibre";
 import DeckGL from "@deck.gl/react";
 import { ScatterplotLayer, PathLayer, PolygonLayer, GeoJsonLayer } from "@deck.gl/layers";
@@ -52,10 +52,28 @@ export function MapRenderer({ config, className }: MapRendererProps) {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [dataSamplingInfo, setDataSamplingInfo] = useState<{
+    original: number;
+    sampled: number;
+  } | null>(null);
+
+  // DeckGL 인스턴스 ref
+  const deckRef = useRef<any>(null);
 
   // 클라이언트 마운트 체크
   useEffect(() => {
     setIsMounted(true);
+
+    // cleanup: 컴포넌트 언마운트 시 WebGL 리소스 정리
+    return () => {
+      if (deckRef.current) {
+        try {
+          deckRef.current.finalize();
+        } catch (e) {
+          console.warn('DeckGL cleanup warning:', e);
+        }
+      }
+    };
   }, []);
 
   // 다크 모드 감지
@@ -98,17 +116,37 @@ export function MapRenderer({ config, className }: MapRendererProps) {
     }
   }, [config]);
 
+  // 데이터 샘플링 (너무 많은 데이터포인트는 성능 저하)
+  const sampleData = (data: any[], maxPoints: number = 5000) => {
+    if (!Array.isArray(data) || data.length <= maxPoints) return data;
+
+    const step = Math.ceil(data.length / maxPoints);
+    return data.filter((_, i) => i % step === 0);
+  };
+
   // deck.gl 레이어 생성
   const layers: Layer[] = useMemo(() => {
     if (!mapConfig?.layers) return [];
 
-    return mapConfig.layers.map((layerConfig, index) => {
+    let totalOriginal = 0;
+    let totalSampled = 0;
+
+    const createdLayers = mapConfig.layers.map((layerConfig, index) => {
       // type과 data를 제외한 나머지 속성만 추출
       const { type, data, ...otherProps } = layerConfig;
 
+      // 데이터 카운트
+      const originalCount = Array.isArray(data) ? data.length : 0;
+      totalOriginal += originalCount;
+
+      // 데이터 샘플링 (대용량 데이터 처리)
+      const sampledData = sampleData(data);
+      const sampledCount = Array.isArray(sampledData) ? sampledData.length : 0;
+      totalSampled += sampledCount;
+
       const commonProps = {
         id: `layer-${index}`,
-        data: data,
+        data: sampledData,
         pickable: true,
         ...otherProps,
       };
@@ -175,6 +213,15 @@ export function MapRenderer({ config, className }: MapRendererProps) {
           return null;
       }
     }).filter(Boolean) as Layer[];
+
+    // 샘플링 정보 업데이트
+    if (totalOriginal > totalSampled) {
+      setDataSamplingInfo({ original: totalOriginal, sampled: totalSampled });
+    } else {
+      setDataSamplingInfo(null);
+    }
+
+    return createdLayers;
   }, [mapConfig]);
 
   // 툴팁 정보
@@ -242,6 +289,7 @@ export function MapRenderer({ config, className }: MapRendererProps) {
     >
       <div className="relative w-full h-[500px]">
         <DeckGL
+          ref={deckRef}
           initialViewState={viewState}
           controller={true}
           layers={mapLoaded ? layers : []}
@@ -266,6 +314,19 @@ export function MapRenderer({ config, className }: MapRendererProps) {
             <pre className="text-xs text-foreground overflow-x-auto">
               {JSON.stringify(hoveredObject, null, 2)}
             </pre>
+          </div>
+        )}
+
+        {/* 샘플링 경고 */}
+        {dataSamplingInfo && (
+          <div className="absolute top-4 right-4 bg-yellow-100 dark:bg-yellow-900/50 text-yellow-900 dark:text-yellow-100 p-2 rounded-lg shadow-lg border border-yellow-500/30 text-xs">
+            <p className="font-semibold">⚠️ 데이터 샘플링됨</p>
+            <p className="mt-1">
+              원본: {dataSamplingInfo.original.toLocaleString()}개 → 표시: {dataSamplingInfo.sampled.toLocaleString()}개
+            </p>
+            <p className="mt-1 text-[10px] opacity-80">
+              성능을 위해 데이터가 샘플링되었습니다
+            </p>
           </div>
         )}
       </div>
