@@ -2,11 +2,14 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { AgGridReact } from "ag-grid-react";
-import { ColDef } from "ag-grid-community";
+import { ModuleRegistry, AllCommunityModule, ColDef } from "ag-grid-community";
 import { cn } from "@/lib/utils";
 
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
+
+// Register AG Grid modules
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 interface AGGridTableProps {
   config: string | { columnDefs: ColDef[]; rowData: any[] };

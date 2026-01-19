@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import * as agCharts from "ag-charts-community";
-import type { AgChartOptions } from "ag-charts-community";
+import { AgCharts, AgChartOptions } from "ag-charts-community";
 import { cn } from "@/lib/utils";
 
 interface AGChartProps {
@@ -43,7 +42,7 @@ export function AGChart({ config, className }: AGChartProps) {
       };
 
       // AG Charts 직접 생성
-      chart = agCharts.AgCharts.create(defaultOptions);
+      chart = AgCharts.create(defaultOptions);
       setIsLoading(false);
     } catch (err) {
       console.error("AG Chart parsing error:", err);
