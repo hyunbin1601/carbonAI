@@ -77,6 +77,7 @@ export function MapRenderer({ config, className }: MapRendererProps) {
   const [layersVisible, setLayersVisible] = useState<boolean[]>([]);
   const [showLegend, setShowLegend] = useState(true);
   const [viewState, setViewState] = useState(DEFAULT_VIEW_STATE);
+  const [isInView, setIsInView] = useState(false);
 
   // DeckGL 및 Map 인스턴스 ref
   const deckRef = useRef<any>(null);
@@ -85,6 +86,29 @@ export function MapRenderer({ config, className }: MapRendererProps) {
 
   // 컴포넌트 고유 ID (재렌더링 시에도 유지)
   const instanceId = useRef(`map-${Math.random().toString(36).substr(2, 9)}`).current;
+
+  // Intersection Observer로 뷰포트 감지 (WebGL 컨텍스트 최적화)
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setIsInView(entry.isIntersecting);
+        });
+      },
+      {
+        rootMargin: '100px', // 100px 전에 미리 로드
+        threshold: 0.1,
+      }
+    );
+
+    observer.observe(containerRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   // 클라이언트 마운트 체크
   useEffect(() => {
@@ -350,6 +374,7 @@ export function MapRenderer({ config, className }: MapRendererProps) {
   if (!isMounted || isLoading || !mapConfig) {
     return (
       <div
+        ref={containerRef}
         className={cn(
           "rounded-xl bg-muted/50 dark:bg-zinc-900 p-4 border border-border/30 dark:border-zinc-700",
           className
@@ -357,6 +382,30 @@ export function MapRenderer({ config, className }: MapRendererProps) {
       >
         <div className="text-center text-sm text-muted-foreground py-4">
           맵 렌더링 중...
+        </div>
+      </div>
+    );
+  }
+
+  // 뷰포트에 보이지 않으면 placeholder만 표시 (WebGL 컨텍스트 절약)
+  if (!isInView) {
+    return (
+      <div
+        ref={containerRef}
+        className={cn(
+          "rounded-xl bg-muted/50 dark:bg-zinc-900 p-4 border border-border/30 dark:border-zinc-700",
+          className
+        )}
+      >
+        <div className="relative w-full h-[500px] flex items-center justify-center">
+          <div className="text-center">
+            <div className="text-sm text-muted-foreground mb-2">
+              🗺️ 지도 (스크롤하여 활성화)
+            </div>
+            <div className="text-xs text-muted-foreground/70">
+              WebGL 리소스 절약을 위해 뷰포트 내에서만 렌더링됩니다
+            </div>
+          </div>
         </div>
       </div>
     );
