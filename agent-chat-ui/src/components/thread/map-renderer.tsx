@@ -19,7 +19,7 @@ interface MapConfig {
   };
   layers?: Array<{
     type: "scatterplot" | "path" | "polygon" | "hexagon" | "geojson";
-    data: any[];
+    data: any;
     [key: string]: any;
   }>;
   style?: string; // Map style URL
@@ -248,16 +248,9 @@ export function MapRenderer({ config, className }: MapRendererProps) {
           onHover={handleHover}
           getTooltip={() => null}
           useDevicePixels={1}
-          parameters={{
-            depthTest: true,
-            blend: true,
-            blendFunc: [770, 771, 1, 771],
-            polygonOffsetFill: true
-          }}
         >
           <Map
             mapStyle={mapStyle}
-            attributionControl={true}
             onLoad={() => {
               setTimeout(() => setMapLoaded(true), 100);
             }}

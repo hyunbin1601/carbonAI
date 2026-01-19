@@ -25,7 +25,7 @@ const seoulLocations = {
   },
   layers: [
     {
-      type: "scatterplot",
+      type: "scatterplot" as const,
       data: [
         { position: [126.9780, 37.5665], radius: 200, color: [255, 0, 0, 200], name: "서울시청" },
         { position: [127.0276, 37.4979], radius: 300, color: [0, 255, 0, 200], name: "강남역" },
@@ -47,7 +47,7 @@ const deliveryRoutes = {
   },
   layers: [
     {
-      type: "path",
+      type: "path" as const,
       data: [
         {
           path: [
@@ -82,7 +82,7 @@ const populationDensity = {
   },
   layers: [
     {
-      type: "hexagon",
+      type: "hexagon" as const,
       data: Array.from({ length: 200 }, () => ({
         position: [
           126.9780 + (Math.random() - 0.5) * 0.2,
@@ -106,7 +106,7 @@ const districtBoundaries = {
   },
   layers: [
     {
-      type: "geojson",
+      type: "geojson" as const,
       data: {
         type: "FeatureCollection",
         features: [
