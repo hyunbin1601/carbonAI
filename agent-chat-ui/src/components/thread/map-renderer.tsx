@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo, useRef, useCallback } from "react";
+import { useEffect, useState, useMemo, useRef, useCallback, memo } from "react";
 import Map from "react-map-gl/maplibre";
 import DeckGL from "@deck.gl/react";
 import { ScatterplotLayer, PathLayer, PolygonLayer, GeoJsonLayer } from "@deck.gl/layers";
@@ -386,6 +386,17 @@ export function MapRenderer({ config, className }: MapRendererProps) {
     setHoveredObject(info.object);
   }, []);
 
+  // viewState 업데이트 throttle (드래그 시 과도한 리렌더링 방지)
+  const lastUpdateTime = useRef(0);
+  const handleViewStateChange = useCallback(({ viewState: newViewState }: any) => {
+    const now = Date.now();
+    // 16ms (60fps) throttle
+    if (now - lastUpdateTime.current > 16) {
+      setViewState(newViewState);
+      lastUpdateTime.current = now;
+    }
+  }, []);
+
   // mapStyle을 메모이제이션하여 불필요한 재로드 방지
   const mapStyle = useMemo(() =>
     mapConfig?.style || (isDarkMode ? DARK_MAP_STYLE : LIGHT_MAP_STYLE),
@@ -539,10 +550,9 @@ export function MapRenderer({ config, className }: MapRendererProps) {
     >
       <div className="relative w-full h-[500px]">
         <DeckGL
-          key={`deck-${instanceId}`}
           ref={deckRef}
           viewState={viewState}
-          onViewStateChange={({ viewState }: any) => setViewState(viewState)}
+          onViewStateChange={handleViewStateChange}
           controller={true}
           layers={mapLoaded ? layers : []}
           onHover={handleHover}
@@ -554,9 +564,8 @@ export function MapRenderer({ config, className }: MapRendererProps) {
           }}
         >
           <Map
-            key={`map-${instanceId}`}
             ref={mapRef}
-            reuseMaps={false}
+            reuseMaps={true}
             mapStyle={mapStyle}
             onLoad={() => {
               setTimeout(() => setMapLoaded(true), 100);
