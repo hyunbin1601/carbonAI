@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo, useRef } from "react";
+import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import Map from "react-map-gl/maplibre";
 import DeckGL from "@deck.gl/react";
 import { ScatterplotLayer, PathLayer, PolygonLayer, GeoJsonLayer } from "@deck.gl/layers";
@@ -81,6 +81,10 @@ export function MapRenderer({ config, className }: MapRendererProps) {
   // DeckGL 및 Map 인스턴스 ref
   const deckRef = useRef<any>(null);
   const mapRef = useRef<any>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // 컴포넌트 고유 ID (재렌더링 시에도 유지)
+  const instanceId = useRef(`map-${Math.random().toString(36).substr(2, 9)}`).current;
 
   // 클라이언트 마운트 체크
   useEffect(() => {
@@ -279,10 +283,53 @@ export function MapRenderer({ config, className }: MapRendererProps) {
     return createdLayers;
   }, [mapConfig, isDarkMode, layersVisible]);
 
-  // 툴팁 정보
-  const handleHover = (info: PickingInfo) => {
+  // 툴팁 정보 - useCallback으로 메모이제이션
+  const handleHover = useCallback((info: PickingInfo) => {
     setHoveredObject(info.object);
-  };
+  }, []);
+
+  // mapStyle을 메모이제이션하여 불필요한 재로드 방지
+  const mapStyle = useMemo(() =>
+    mapConfig?.style || (isDarkMode ? DARK_MAP_STYLE : LIGHT_MAP_STYLE),
+    [mapConfig?.style, isDarkMode]
+  );
+
+  // 컨트롤 함수들
+  const handleZoomIn = useCallback(() => {
+    setViewState(prev => ({ ...prev, zoom: Math.min(prev.zoom + 1, 20) }));
+  }, []);
+
+  const handleZoomOut = useCallback(() => {
+    setViewState(prev => ({ ...prev, zoom: Math.max(prev.zoom - 1, 0) }));
+  }, []);
+
+  const handleResetView = useCallback(() => {
+    setViewState({
+      ...DEFAULT_VIEW_STATE,
+      ...mapConfig?.initialViewState,
+    });
+  }, [mapConfig?.initialViewState]);
+
+  const toggleLayer = useCallback((index: number) => {
+    setLayersVisible(prev => {
+      const newVisible = [...prev];
+      newVisible[index] = !newVisible[index];
+      return newVisible;
+    });
+  }, []);
+
+  // 툴팁 데이터 포맷팅
+  const formatTooltipData = useCallback((obj: any) => {
+    if (!obj) return null;
+
+    const entries = Object.entries(obj).filter(([key]) =>
+      !key.startsWith('_') && key !== 'index'
+    );
+
+    if (entries.length === 0) return null;
+
+    return entries.slice(0, 8); // 최대 8개 항목만 표시
+  }, []);
 
   if (error) {
     return (
@@ -315,45 +362,6 @@ export function MapRenderer({ config, className }: MapRendererProps) {
     );
   }
 
-  const mapStyle = mapConfig.style || (isDarkMode ? DARK_MAP_STYLE : LIGHT_MAP_STYLE);
-
-  // 컨트롤 함수들
-  const handleZoomIn = () => {
-    setViewState(prev => ({ ...prev, zoom: Math.min(prev.zoom + 1, 20) }));
-  };
-
-  const handleZoomOut = () => {
-    setViewState(prev => ({ ...prev, zoom: Math.max(prev.zoom - 1, 0) }));
-  };
-
-  const handleResetView = () => {
-    setViewState({
-      ...DEFAULT_VIEW_STATE,
-      ...mapConfig?.initialViewState,
-    });
-  };
-
-  const toggleLayer = (index: number) => {
-    setLayersVisible(prev => {
-      const newVisible = [...prev];
-      newVisible[index] = !newVisible[index];
-      return newVisible;
-    });
-  };
-
-  // 툴팁 데이터 포맷팅
-  const formatTooltipData = (obj: any) => {
-    if (!obj) return null;
-
-    const entries = Object.entries(obj).filter(([key]) =>
-      !key.startsWith('_') && key !== 'index'
-    );
-
-    if (entries.length === 0) return null;
-
-    return entries.slice(0, 8); // 최대 8개 항목만 표시
-  };
-
   // WebGL 지원 체크
   if (typeof window !== 'undefined') {
     const canvas = document.createElement('canvas');
@@ -369,6 +377,7 @@ export function MapRenderer({ config, className }: MapRendererProps) {
 
   return (
     <div
+      ref={containerRef}
       className={cn(
         "map-container rounded-xl overflow-hidden border border-border/50 dark:border-zinc-700/50 shadow-sm",
         className
@@ -376,6 +385,7 @@ export function MapRenderer({ config, className }: MapRendererProps) {
     >
       <div className="relative w-full h-[500px]">
         <DeckGL
+          key={`deck-${instanceId}`}
           ref={deckRef}
           viewState={viewState}
           onViewStateChange={({ viewState }: any) => setViewState(viewState)}
@@ -384,16 +394,21 @@ export function MapRenderer({ config, className }: MapRendererProps) {
           onHover={handleHover}
           getTooltip={() => null}
           useDevicePixels={1}
+          _typedArrayManagerProps={{
+            overAlloc: 1,
+            poolSize: 0
+          }}
         >
           <Map
+            key={`map-${instanceId}`}
             ref={mapRef}
-            reuseMaps
+            reuseMaps={false}
             mapStyle={mapStyle}
             onLoad={() => {
               setTimeout(() => setMapLoaded(true), 100);
             }}
-            onRemove={() => {
-              setMapLoaded(false);
+            onError={(e) => {
+              console.warn('Map error:', e);
             }}
           />
         </DeckGL>
