@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { AgCharts, AgChartOptions } from "ag-charts-community";
+import { useEffect, useState } from "react";
+import { AgChartsReact } from "ag-charts-react";
+import type { AgChartOptions } from "ag-charts-community";
 import { cn } from "@/lib/utils";
 
 interface AGChartProps {
@@ -10,17 +11,14 @@ interface AGChartProps {
 }
 
 export function AGChart({ config, className }: AGChartProps) {
-  const chartRef = useRef<HTMLDivElement>(null);
+  const [chartOptions, setChartOptions] = useState<AgChartOptions | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!chartRef.current) return;
-
     setIsLoading(true);
     setError(null);
-
-    let chart: any;
+    setChartOptions(null);
 
     try {
       let options: AgChartOptions;
@@ -34,28 +32,19 @@ export function AGChart({ config, className }: AGChartProps) {
 
       // 기본 테마 및 스타일 적용
       const defaultOptions: AgChartOptions = {
-        container: chartRef.current,
         background: {
           fill: "transparent",
         },
         ...options,
       };
 
-      // AG Charts 직접 생성
-      chart = AgCharts.create(defaultOptions);
+      setChartOptions(defaultOptions);
       setIsLoading(false);
     } catch (err) {
       console.error("AG Chart parsing error:", err);
       setError(err instanceof Error ? err.message : "차트를 렌더링할 수 없습니다.");
       setIsLoading(false);
     }
-
-    // Cleanup
-    return () => {
-      if (chart) {
-        chart.destroy();
-      }
-    };
   }, [config]);
 
   if (error) {
@@ -74,19 +63,29 @@ export function AGChart({ config, className }: AGChartProps) {
     );
   }
 
-  return (
-    <div
-      className={cn(
-        "ag-chart-container rounded-xl bg-muted/50 dark:bg-zinc-900 p-4 border border-border/30 dark:border-zinc-700",
-        className
-      )}
-    >
-      {isLoading && (
+  if (isLoading || !chartOptions) {
+    return (
+      <div
+        className={cn(
+          "rounded-xl bg-muted/50 dark:bg-zinc-900 p-4 border border-border/30 dark:border-zinc-700",
+          className
+        )}
+      >
         <div className="text-center text-sm text-muted-foreground py-4">
           차트 렌더링 중...
         </div>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className={cn(
+        "ag-chart-container rounded-xl bg-muted/50 dark:bg-zinc-900 p-4 border border-border/30 dark:border-zinc-700 h-[450px]",
+        className
       )}
-      <div ref={chartRef} className="w-full h-[400px]" />
+    >
+      <AgChartsReact options={chartOptions} />
     </div>
   );
 }
