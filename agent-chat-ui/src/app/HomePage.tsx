@@ -46,7 +46,7 @@ export function HomePage({ initialConfig }: HomePageProps) {
             <div className="text-white/60 text-lg animate-pulse">Loading 3D Scene...</div>
           </div>
         ) : (
-          // @ts-ignore
+          // @ts-expect-error - spline-viewer is a web component
           <spline-viewer
             url="https://prod.spline.design/2YTWwBKDt94Jth9t/scene.splinecode"
             style={{ width: "100%", height: "100%" }}
