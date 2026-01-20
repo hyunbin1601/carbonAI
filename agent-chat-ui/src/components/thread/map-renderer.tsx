@@ -563,7 +563,6 @@ export function MapRenderer({ config, className }: MapRendererProps) {
         <DeckGL
           ref={deckRef}
           viewState={viewState}
-          onViewStateChange={handleViewStateChange}
           controller={false}
           layers={mapLoaded ? layers : []}
           onHover={handleHover}
@@ -578,13 +577,17 @@ export function MapRenderer({ config, className }: MapRendererProps) {
             ref={mapRef}
             reuseMaps={true}
             mapStyle={mapStyle}
-            dragPan={false}
+            {...viewState}
+            dragPan={true}
             dragRotate={false}
-            scrollZoom={false}
-            doubleClickZoom={false}
+            scrollZoom={true}
+            doubleClickZoom={true}
             touchZoomRotate={false}
             touchPitch={false}
             keyboard={false}
+            onMove={(evt) => {
+              setViewState(evt.viewState);
+            }}
             onLoad={() => {
               setTimeout(() => setMapLoaded(true), 100);
             }}
