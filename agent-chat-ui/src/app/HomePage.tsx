@@ -8,7 +8,7 @@ import { Rocket } from "lucide-react";
 
 // Spline을 클라이언트 전용으로 동적 로드 (SSR 비활성화)
 const Spline = dynamic(
-  () => import("@splinetool/react-spline/next"),
+  () => import("@splinetool/react-spline").then((mod) => mod.default),
   {
     ssr: false,
     loading: () => (
