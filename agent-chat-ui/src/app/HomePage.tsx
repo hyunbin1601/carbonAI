@@ -28,19 +28,16 @@ export function HomePage({ initialConfig }: HomePageProps) {
     document.head.appendChild(script);
   }, []);
 
-  const handleScreenClick = () => {
+  const handleStartClick = () => {
     if (!isChatOpen) {
       setIsChatOpen(true);
     }
   };
 
   return (
-    <div
-      className="relative w-full h-screen overflow-hidden cursor-pointer"
-      onClick={handleScreenClick}
-    >
-      {/* Spline 3D 배경 */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
+    <div className="relative w-full h-screen overflow-hidden">
+      {/* Spline 3D 배경 - 인터랙티브 */}
+      <div className="absolute inset-0 z-0">
         {!splineLoaded ? (
           <div className="w-full h-full bg-gradient-to-br from-slate-900 via-teal-900 to-emerald-900 flex items-center justify-center">
             <div className="text-white/60 text-lg animate-pulse">Loading 3D Scene...</div>
@@ -54,12 +51,15 @@ export function HomePage({ initialConfig }: HomePageProps) {
         )}
       </div>
 
-      {/* 클릭 힌트 */}
+      {/* 시작 버튼 - Spline과 별도로 클릭 가능 */}
       {!isChatOpen && (
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 text-center animate-pulse">
-          <p className="text-white/70 text-sm drop-shadow-md">
-            화면을 클릭하여 시작하세요
-          </p>
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 text-center">
+          <button
+            onClick={handleStartClick}
+            className="px-6 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 rounded-full text-white text-sm font-medium transition-all duration-300 hover:scale-105 cursor-pointer shadow-lg"
+          >
+            채팅 시작하기
+          </button>
         </div>
       )}
 
