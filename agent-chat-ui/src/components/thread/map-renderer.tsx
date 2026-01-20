@@ -564,7 +564,7 @@ export function MapRenderer({ config, className }: MapRendererProps) {
           ref={deckRef}
           viewState={viewState}
           onViewStateChange={handleViewStateChange}
-          controller={true}
+          controller={false}
           layers={mapLoaded ? layers : []}
           onHover={handleHover}
           getTooltip={() => null}
