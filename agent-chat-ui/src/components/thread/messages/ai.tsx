@@ -14,6 +14,7 @@ import { ThreadView } from "../agent-inbox";
 import { useQueryState, parseAsBoolean } from "nuqs";
 import { GenericInterruptView } from "./generic-interrupt";
 import { useArtifact } from "../artifact";
+import { useTypingEffect } from "@/hooks/useTypingEffect";
 
 function CustomComponent({
   message,
@@ -125,6 +126,13 @@ export function AssistantMessage({
   const thread = useStreamContext();
   const isLastMessage =
     thread.messages[thread.messages.length - 1].id === message?.id;
+
+  // 타이핑 효과: 마지막 AI 메시지이고 로딩 중이거나 방금 완료된 경우에만 적용
+  const shouldAnimate = isLastMessage && message?.type === "ai";
+  const { displayedText, isTyping } = useTypingEffect(contentString, {
+    speed: 10, // 글자당 10ms (빠른 타이핑)
+    enabled: shouldAnimate,
+  });
   const hasNoAIOrToolMessages = !thread.messages.find(
     (m) => m.type === "ai" || m.type === "tool",
   );
@@ -167,9 +175,13 @@ export function AssistantMessage({
           </>
         ) : (
           <>
-            {contentString && (
+            {displayedText && (
               <div className="py-1 leading-relaxed">
-                <MarkdownText>{contentString}</MarkdownText>
+                <MarkdownText>{displayedText}</MarkdownText>
+                {/* 타이핑 커서 표시 */}
+                {isTyping && (
+                  <span className="inline-block w-0.5 h-4 bg-foreground/70 animate-pulse ml-0.5 align-middle" />
+                )}
               </div>
             )}
 

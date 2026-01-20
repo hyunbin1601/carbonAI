@@ -9,10 +9,10 @@ import type { Layer } from "@deck.gl/core";
 import { cn } from "@/lib/utils";
 import "leaflet/dist/leaflet.css";
 
-// 전역 활성 맵 관리 (WebGL 컨텍스트 제한 준수)
+// 전역 활성 맵 관리 
 const activeMapInstances = new Set<string>();
 const MAX_ACTIVE_MAPS = 8; // Leaflet은 WebGL을 1개만 사용하므로 더 많이 허용
-
+// map libre -> deck.gl + leaflet 으로 변경
 const registerMap = (id: string): boolean => {
   if (activeMapInstances.size >= MAX_ACTIVE_MAPS && !activeMapInstances.has(id)) {
     return false;
