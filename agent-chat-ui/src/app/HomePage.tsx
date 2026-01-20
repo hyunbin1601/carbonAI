@@ -1,22 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
-import dynamic from "next/dynamic";
+import React, { useState, useEffect } from "react";
 import { FloatingChat } from "@/components/floating-chat";
 import { ChatConfig } from "@/lib/config";
-
-// Spline을 클라이언트 전용으로 동적 로드 (SSR 비활성화)
-const Spline = dynamic(
-  () => import("@splinetool/react-spline").then((mod) => mod.default),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="w-full h-full bg-gradient-to-br from-slate-900 via-teal-900 to-emerald-900 flex items-center justify-center">
-        <div className="text-white/60 text-lg animate-pulse">Loading 3D Scene...</div>
-      </div>
-    ),
-  }
-);
 
 interface HomePageProps {
   initialConfig: ChatConfig;
@@ -24,6 +10,23 @@ interface HomePageProps {
 
 export function HomePage({ initialConfig }: HomePageProps) {
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [splineLoaded, setSplineLoaded] = useState(false);
+
+  // Spline 스크립트 동적 로드
+  useEffect(() => {
+    const existingScript = document.querySelector('script[src*="splinetool/viewer"]');
+
+    if (existingScript) {
+      setSplineLoaded(true);
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.type = "module";
+    script.src = "https://unpkg.com/@splinetool/viewer@1.9.48/build/spline-viewer.js";
+    script.onload = () => setSplineLoaded(true);
+    document.head.appendChild(script);
+  }, []);
 
   const handleScreenClick = () => {
     if (!isChatOpen) {
@@ -38,7 +41,17 @@ export function HomePage({ initialConfig }: HomePageProps) {
     >
       {/* Spline 3D 배경 */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <Spline scene="https://prod.spline.design/2YTWwBKDt94Jth9t/scene.splinecode" />
+        {!splineLoaded ? (
+          <div className="w-full h-full bg-gradient-to-br from-slate-900 via-teal-900 to-emerald-900 flex items-center justify-center">
+            <div className="text-white/60 text-lg animate-pulse">Loading 3D Scene...</div>
+          </div>
+        ) : (
+          // @ts-ignore
+          <spline-viewer
+            url="https://prod.spline.design/2YTWwBKDt94Jth9t/scene.splinecode"
+            style={{ width: "100%", height: "100%" }}
+          />
+        )}
       </div>
 
       {/* 클릭 힌트 */}
