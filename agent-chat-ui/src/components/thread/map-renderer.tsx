@@ -2,12 +2,11 @@
 
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
-import { LeafletLayer } from "@deck.gl-community/leaflet";
+import { DeckLayer } from "@deck.gl-community/leaflet";
 import { ScatterplotLayer, PathLayer, PolygonLayer, GeoJsonLayer } from "@deck.gl/layers";
 import { HexagonLayer } from "@deck.gl/aggregation-layers";
 import type { Layer } from "@deck.gl/core";
 import { cn } from "@/lib/utils";
-import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 // 전역 활성 맵 관리 (WebGL 컨텍스트 제한 준수)
@@ -95,8 +94,8 @@ function DeckGLOverlay({
   useEffect(() => {
     if (!mapLoaded || !map) return;
 
-    // LeafletLayer 생성
-    const deckLayer = new LeafletLayer({
+    // DeckLayer 생성
+    const deckLayer = new DeckLayer({
       layers: layers,
       onHover: onHover,
       getTooltip: () => null,
