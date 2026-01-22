@@ -537,8 +537,9 @@ async def create_run_stream(thread_id: str, request: Request):
             try:
                 chunk_count = 0
 
-                # Use standard astream (works with SDK)
-                async for chunk in graph.astream(graph_input, config=graph_config, stream_mode="updates"):
+                # Use "values" mode - returns complete state after each node
+                # This matches frontend streamMode: ["values"]
+                async for chunk in graph.astream(graph_input, config=graph_config, stream_mode="values"):
                     chunk_count += 1
                     print(f"\n[STREAM] ===== Chunk {chunk_count} =====")
                     print(f"[STREAM] Chunk keys: {list(chunk.keys())}")
