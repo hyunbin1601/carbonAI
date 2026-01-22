@@ -127,9 +127,12 @@ export function AssistantMessage({
   const isLastMessage =
     thread.messages[thread.messages.length - 1].id === message?.id;
 
-  // 타이핑 효과 비활성화 - 토큰이 도착하는 즉시 표시 (실시간 스트리밍)
-  const displayedText = contentString;
-  const isTyping = false;
+  // 타이핑 효과: 마지막 AI 메시지이고 로딩 중이거나 방금 완료된 경우에만 적용
+  const shouldAnimate = isLastMessage && message?.type === "ai";
+  const { displayedText, isTyping } = useTypingEffect(contentString, {
+    speed: 3, // 글자당 3ms (매우 빠른 타이핑 - 이전 10ms에서 3배 향상)
+    enabled: shouldAnimate,
+  });
   const hasNoAIOrToolMessages = !thread.messages.find(
     (m) => m.type === "ai" || m.type === "tool",
   );
