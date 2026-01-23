@@ -40,7 +40,8 @@
       "Bash(pnpm run build:*)",
       "Bash(pnpm remove:*)",
       "Bash(timeout /t 10 /nobreak)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(iconv:*)"
     ]
   }
 }

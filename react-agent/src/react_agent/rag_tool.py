@@ -584,7 +584,7 @@ class RAGTool:
                     'source': source,
                     'filename': doc.metadata.get('filename', 'unknown'),
                     'chunk_index': chunk_index,
-                    'similarity': similarity
+                    'similarity': float(similarity)  # numpy.float64 -> float 변환
                 })
 
                 # 최대 k개까지만 수집 (유사도가 높은 순서대로)
@@ -729,9 +729,9 @@ class RAGTool:
                     'source': doc.metadata.get('source', 'unknown'),
                     'filename': doc.metadata.get('filename', 'unknown'),
                     'chunk_index': doc.metadata.get('chunk_index', 0),
-                    'similarity': hybrid_score,
-                    'vector_score': result['vector_score'],
-                    'bm25_score': result['bm25_score']
+                    'similarity': float(hybrid_score),  # numpy.float64 -> float 변환
+                    'vector_score': float(result['vector_score']),
+                    'bm25_score': float(result['bm25_score'])
                 })
 
                 # 상위 3개는 상세 로깅

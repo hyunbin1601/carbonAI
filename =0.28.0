@@ -1,0 +1,335 @@
+Defaulting to user installation because normal site-packages is not writeable
+Collecting crewai
+  Downloading crewai-1.8.1-py3-none-any.whl.metadata (36 kB)
+Collecting aiosqlite~=0.21.0 (from crewai)
+  Downloading aiosqlite-0.21.0-py3-none-any.whl.metadata (4.3 kB)
+Collecting appdirs~=1.4.4 (from crewai)
+  Downloading appdirs-1.4.4-py2.py3-none-any.whl.metadata (9.0 kB)
+Collecting chromadb~=1.1.0 (from crewai)
+  Downloading chromadb-1.1.1-cp39-abi3-win_amd64.whl.metadata (7.4 kB)
+Collecting click~=8.1.7 (from crewai)
+  Downloading click-8.1.8-py3-none-any.whl.metadata (2.3 kB)
+Collecting instructor>=1.3.3 (from crewai)
+  Downloading instructor-1.14.4-py3-none-any.whl.metadata (12 kB)
+Collecting json-repair~=0.25.2 (from crewai)
+  Downloading json_repair-0.25.3-py3-none-any.whl.metadata (7.9 kB)
+Collecting json5~=0.10.0 (from crewai)
+  Downloading json5-0.10.0-py3-none-any.whl.metadata (34 kB)
+Collecting jsonref~=1.1.0 (from crewai)
+  Downloading jsonref-1.1.0-py3-none-any.whl.metadata (2.7 kB)
+Collecting mcp~=1.16.0 (from crewai)
+  Downloading mcp-1.16.0-py3-none-any.whl.metadata (80 kB)
+Collecting openai~=1.83.0 (from crewai)
+  Downloading openai-1.83.0-py3-none-any.whl.metadata (25 kB)
+Collecting openpyxl~=3.1.5 (from crewai)
+  Using cached openpyxl-3.1.5-py2.py3-none-any.whl.metadata (2.5 kB)
+Collecting opentelemetry-api~=1.34.0 (from crewai)
+  Downloading opentelemetry_api-1.34.1-py3-none-any.whl.metadata (1.5 kB)
+Collecting opentelemetry-exporter-otlp-proto-http~=1.34.0 (from crewai)
+  Downloading opentelemetry_exporter_otlp_proto_http-1.34.1-py3-none-any.whl.metadata (2.3 kB)
+Collecting opentelemetry-sdk~=1.34.0 (from crewai)
+  Downloading opentelemetry_sdk-1.34.1-py3-none-any.whl.metadata (1.6 kB)
+Collecting pdfplumber~=0.11.4 (from crewai)
+  Downloading pdfplumber-0.11.9-py3-none-any.whl.metadata (43 kB)
+Collecting portalocker~=2.7.0 (from crewai)
+  Downloading portalocker-2.7.0-py2.py3-none-any.whl.metadata (6.8 kB)
+Collecting pydantic-settings~=2.10.1 (from crewai)
+  Downloading pydantic_settings-2.10.1-py3-none-any.whl.metadata (3.4 kB)
+Collecting pydantic~=2.11.9 (from crewai)
+  Downloading pydantic-2.11.10-py3-none-any.whl.metadata (68 kB)
+Collecting pyjwt~=2.9.0 (from crewai)
+  Downloading PyJWT-2.9.0-py3-none-any.whl.metadata (3.0 kB)
+Collecting python-dotenv~=1.1.1 (from crewai)
+  Downloading python_dotenv-1.1.1-py3-none-any.whl.metadata (24 kB)
+Collecting regex~=2024.9.11 (from crewai)
+  Downloading regex-2024.9.11-cp313-cp313-win_amd64.whl.metadata (41 kB)
+Collecting tokenizers~=0.20.3 (from crewai)
+  Downloading tokenizers-0.20.3-cp313-none-win_amd64.whl.metadata (6.9 kB)
+Collecting tomli-w~=1.1.0 (from crewai)
+  Downloading tomli_w-1.1.0-py3-none-any.whl.metadata (5.7 kB)
+Collecting tomli~=2.0.2 (from crewai)
+  Downloading tomli-2.0.2-py3-none-any.whl.metadata (10.0 kB)
+Collecting uv~=0.9.13 (from crewai)
+  Downloading uv-0.9.26-py3-none-win_amd64.whl.metadata (12 kB)
+Requirement already satisfied: typing_extensions>=4.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from aiosqlite~=0.21.0->crewai) (4.15.0)
+Requirement already satisfied: build>=1.0.3 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from chromadb~=1.1.0->crewai) (1.3.0)
+Requirement already satisfied: pybase64>=1.4.1 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from chromadb~=1.1.0->crewai) (1.4.3)
+Requirement already satisfied: uvicorn>=0.18.3 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from uvicorn[standard]>=0.18.3->chromadb~=1.1.0->crewai) (0.38.0)
+Requirement already satisfied: numpy>=1.22.5 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from chromadb~=1.1.0->crewai) (2.3.5)
+Requirement already satisfied: posthog<6.0.0,>=2.4.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from chromadb~=1.1.0->crewai) (5.4.0)
+Requirement already satisfied: onnxruntime>=1.14.1 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from chromadb~=1.1.0->crewai) (1.23.2)
+Requirement already satisfied: opentelemetry-exporter-otlp-proto-grpc>=1.2.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from chromadb~=1.1.0->crewai) (1.39.1)
+Requirement already satisfied: pypika>=0.48.9 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from chromadb~=1.1.0->crewai) (0.48.9)
+Requirement already satisfied: tqdm>=4.65.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from chromadb~=1.1.0->crewai) (4.67.1)
+Requirement already satisfied: overrides>=7.3.1 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from chromadb~=1.1.0->crewai) (7.7.0)
+Requirement already satisfied: importlib-resources in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from chromadb~=1.1.0->crewai) (6.5.2)
+Requirement already satisfied: grpcio>=1.58.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from chromadb~=1.1.0->crewai) (1.76.0)
+Requirement already satisfied: bcrypt>=4.0.1 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from chromadb~=1.1.0->crewai) (5.0.0)
+Requirement already satisfied: typer>=0.9.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from chromadb~=1.1.0->crewai) (0.21.1)
+Requirement already satisfied: kubernetes>=28.1.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from chromadb~=1.1.0->crewai) (34.1.0)
+Requirement already satisfied: tenacity>=8.2.3 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from chromadb~=1.1.0->crewai) (9.1.2)
+Requirement already satisfied: pyyaml>=6.0.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from chromadb~=1.1.0->crewai) (6.0.3)
+Requirement already satisfied: mmh3>=4.0.1 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from chromadb~=1.1.0->crewai) (5.2.0)
+Requirement already satisfied: orjson>=3.9.12 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from chromadb~=1.1.0->crewai) (3.11.5)
+Requirement already satisfied: httpx>=0.27.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from chromadb~=1.1.0->crewai) (0.28.1)
+Requirement already satisfied: rich>=10.11.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from chromadb~=1.1.0->crewai) (14.2.0)
+Requirement already satisfied: jsonschema>=4.19.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from chromadb~=1.1.0->crewai) (4.25.1)
+Requirement already satisfied: colorama in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from click~=8.1.7->crewai) (0.4.6)
+Requirement already satisfied: anyio>=4.5 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from mcp~=1.16.0->crewai) (4.12.0)
+Requirement already satisfied: httpx-sse>=0.4 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from mcp~=1.16.0->crewai) (0.4.3)
+Requirement already satisfied: python-multipart>=0.0.9 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from mcp~=1.16.0->crewai) (0.0.21)
+Requirement already satisfied: pywin32>=310 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from mcp~=1.16.0->crewai) (311)
+Requirement already satisfied: sse-starlette>=1.6.1 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from mcp~=1.16.0->crewai) (2.1.3)
+Requirement already satisfied: starlette>=0.27 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from mcp~=1.16.0->crewai) (0.50.0)
+Requirement already satisfied: distro<2,>=1.7.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from openai~=1.83.0->crewai) (1.9.0)
+Requirement already satisfied: jiter<1,>=0.4.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from openai~=1.83.0->crewai) (0.12.0)
+Requirement already satisfied: sniffio in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from openai~=1.83.0->crewai) (1.3.1)
+Requirement already satisfied: idna>=2.8 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from anyio>=4.5->mcp~=1.16.0->crewai) (3.11)
+Requirement already satisfied: certifi in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from httpx>=0.27.0->chromadb~=1.1.0->crewai) (2025.11.12)
+Requirement already satisfied: httpcore==1.* in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from httpx>=0.27.0->chromadb~=1.1.0->crewai) (1.0.9)
+Requirement already satisfied: h11>=0.16 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from httpcore==1.*->httpx>=0.27.0->chromadb~=1.1.0->crewai) (0.16.0)
+Collecting et-xmlfile (from openpyxl~=3.1.5->crewai)
+  Using cached et_xmlfile-2.0.0-py3-none-any.whl.metadata (2.7 kB)
+Requirement already satisfied: importlib-metadata<8.8.0,>=6.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from opentelemetry-api~=1.34.0->crewai) (8.7.1)
+Requirement already satisfied: zipp>=3.20 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from importlib-metadata<8.8.0,>=6.0->opentelemetry-api~=1.34.0->crewai) (3.23.0)
+Requirement already satisfied: googleapis-common-protos~=1.52 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from opentelemetry-exporter-otlp-proto-http~=1.34.0->crewai) (1.72.0)
+Collecting opentelemetry-exporter-otlp-proto-common==1.34.1 (from opentelemetry-exporter-otlp-proto-http~=1.34.0->crewai)
+  Downloading opentelemetry_exporter_otlp_proto_common-1.34.1-py3-none-any.whl.metadata (1.9 kB)
+Collecting opentelemetry-proto==1.34.1 (from opentelemetry-exporter-otlp-proto-http~=1.34.0->crewai)
+  Downloading opentelemetry_proto-1.34.1-py3-none-any.whl.metadata (2.4 kB)
+Requirement already satisfied: requests~=2.7 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from opentelemetry-exporter-otlp-proto-http~=1.34.0->crewai) (2.32.5)
+Collecting protobuf<6.0,>=5.0 (from opentelemetry-proto==1.34.1->opentelemetry-exporter-otlp-proto-http~=1.34.0->crewai)
+  Downloading protobuf-5.29.5-cp310-abi3-win_amd64.whl.metadata (592 bytes)
+Collecting opentelemetry-semantic-conventions==0.55b1 (from opentelemetry-sdk~=1.34.0->crewai)
+  Downloading opentelemetry_semantic_conventions-0.55b1-py3-none-any.whl.metadata (2.5 kB)
+Collecting pdfminer.six==20251230 (from pdfplumber~=0.11.4->crewai)
+  Downloading pdfminer_six-20251230-py3-none-any.whl.metadata (4.3 kB)
+Collecting Pillow>=9.1 (from pdfplumber~=0.11.4->crewai)
+  Using cached pillow-12.1.0-cp313-cp313-win_amd64.whl.metadata (9.0 kB)
+Collecting pypdfium2>=4.18.0 (from pdfplumber~=0.11.4->crewai)
+  Downloading pypdfium2-5.3.0-py3-none-win_amd64.whl.metadata (67 kB)
+Requirement already satisfied: charset-normalizer>=2.0.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from pdfminer.six==20251230->pdfplumber~=0.11.4->crewai) (3.4.4)
+Requirement already satisfied: cryptography>=36.0.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from pdfminer.six==20251230->pdfplumber~=0.11.4->crewai) (46.0.3)
+Requirement already satisfied: six>=1.5 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from posthog<6.0.0,>=2.4.0->chromadb~=1.1.0->crewai) (1.17.0)
+Requirement already satisfied: python-dateutil>=2.2 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from posthog<6.0.0,>=2.4.0->chromadb~=1.1.0->crewai) (2.9.0.post0)
+Requirement already satisfied: backoff>=1.10.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from posthog<6.0.0,>=2.4.0->chromadb~=1.1.0->crewai) (2.2.1)
+Requirement already satisfied: annotated-types>=0.6.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from pydantic~=2.11.9->crewai) (0.7.0)
+Collecting pydantic-core==2.33.2 (from pydantic~=2.11.9->crewai)
+  Downloading pydantic_core-2.33.2-cp313-cp313-win_amd64.whl.metadata (6.9 kB)
+Requirement already satisfied: typing-inspection>=0.4.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from pydantic~=2.11.9->crewai) (0.4.2)
+Requirement already satisfied: urllib3<3,>=1.21.1 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from requests~=2.7->opentelemetry-exporter-otlp-proto-http~=1.34.0->crewai) (2.3.0)
+Requirement already satisfied: huggingface-hub<1.0,>=0.16.4 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from tokenizers~=0.20.3->crewai) (0.36.0)
+Requirement already satisfied: filelock in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from huggingface-hub<1.0,>=0.16.4->tokenizers~=0.20.3->crewai) (3.20.1)
+Requirement already satisfied: fsspec>=2023.5.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from huggingface-hub<1.0,>=0.16.4->tokenizers~=0.20.3->crewai) (2025.12.0)
+Requirement already satisfied: packaging>=20.9 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from huggingface-hub<1.0,>=0.16.4->tokenizers~=0.20.3->crewai) (25.0)
+Requirement already satisfied: pyproject_hooks in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from build>=1.0.3->chromadb~=1.1.0->crewai) (1.2.0)
+Requirement already satisfied: cffi>=2.0.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from cryptography>=36.0.0->pdfminer.six==20251230->pdfplumber~=0.11.4->crewai) (2.0.0)
+Requirement already satisfied: pycparser in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from cffi>=2.0.0->cryptography>=36.0.0->pdfminer.six==20251230->pdfplumber~=0.11.4->crewai) (2.23)
+Requirement already satisfied: aiohttp<4.0.0,>=3.9.1 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from instructor>=1.3.3->crewai) (3.13.2)
+Collecting diskcache>=5.6.3 (from instructor>=1.3.3->crewai)
+  Downloading diskcache-5.6.3-py3-none-any.whl.metadata (20 kB)
+Requirement already satisfied: docstring-parser<1.0,>=0.16 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from instructor>=1.3.3->crewai) (0.17.0)
+Requirement already satisfied: jinja2<4.0.0,>=3.1.4 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from instructor>=1.3.3->crewai) (3.1.6)
+Collecting jiter<1,>=0.4.0 (from openai~=1.83.0->crewai)
+  Downloading jiter-0.11.1-cp313-cp313-win_amd64.whl.metadata (5.3 kB)
+INFO: pip is looking at multiple versions of instructor to determine which version is compatible with other requirements. This could take a while.
+Collecting instructor>=1.3.3 (from crewai)
+  Downloading instructor-1.14.3-py3-none-any.whl.metadata (12 kB)
+  Downloading instructor-1.14.2-py3-none-any.whl.metadata (12 kB)
+  Downloading instructor-1.14.1-py3-none-any.whl.metadata (12 kB)
+  Downloading instructor-1.13.0-py3-none-any.whl.metadata (11 kB)
+  Downloading instructor-1.12.0-py3-none-any.whl.metadata (11 kB)
+Collecting jiter<1,>=0.4.0 (from openai~=1.83.0->crewai)
+  Downloading jiter-0.10.0-cp313-cp313-win_amd64.whl.metadata (5.3 kB)
+Collecting pre-commit>=4.3.0 (from instructor>=1.3.3->crewai)
+  Downloading pre_commit-4.5.1-py2.py3-none-any.whl.metadata (1.2 kB)
+Requirement already satisfied: aiohappyeyeballs>=2.5.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from aiohttp<4.0.0,>=3.9.1->instructor>=1.3.3->crewai) (2.6.1)
+Requirement already satisfied: aiosignal>=1.4.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from aiohttp<4.0.0,>=3.9.1->instructor>=1.3.3->crewai) (1.4.0)
+Requirement already satisfied: attrs>=17.3.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from aiohttp<4.0.0,>=3.9.1->instructor>=1.3.3->crewai) (25.4.0)
+Requirement already satisfied: frozenlist>=1.1.1 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from aiohttp<4.0.0,>=3.9.1->instructor>=1.3.3->crewai) (1.8.0)
+Requirement already satisfied: multidict<7.0,>=4.5 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from aiohttp<4.0.0,>=3.9.1->instructor>=1.3.3->crewai) (6.7.0)
+Requirement already satisfied: propcache>=0.2.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from aiohttp<4.0.0,>=3.9.1->instructor>=1.3.3->crewai) (0.4.1)
+Requirement already satisfied: yarl<2.0,>=1.17.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from aiohttp<4.0.0,>=3.9.1->instructor>=1.3.3->crewai) (1.22.0)
+Requirement already satisfied: MarkupSafe>=2.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from jinja2<4.0.0,>=3.1.4->instructor>=1.3.3->crewai) (3.0.3)
+Requirement already satisfied: markdown-it-py>=2.2.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from rich>=10.11.0->chromadb~=1.1.0->crewai) (4.0.0)
+Requirement already satisfied: pygments<3.0.0,>=2.13.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from rich>=10.11.0->chromadb~=1.1.0->crewai) (2.19.2)
+Requirement already satisfied: shellingham>=1.3.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from typer>=0.9.0->chromadb~=1.1.0->crewai) (1.5.4)
+Requirement already satisfied: jsonschema-specifications>=2023.03.6 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from jsonschema>=4.19.0->chromadb~=1.1.0->crewai) (2025.9.1)
+Requirement already satisfied: referencing>=0.28.4 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from jsonschema>=4.19.0->chromadb~=1.1.0->crewai) (0.37.0)
+Requirement already satisfied: rpds-py>=0.7.1 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from jsonschema>=4.19.0->chromadb~=1.1.0->crewai) (0.30.0)
+Requirement already satisfied: google-auth>=1.0.1 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from kubernetes>=28.1.0->chromadb~=1.1.0->crewai) (2.43.0)
+Requirement already satisfied: websocket-client!=0.40.0,!=0.41.*,!=0.42.*,>=0.32.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from kubernetes>=28.1.0->chromadb~=1.1.0->crewai) (1.9.0)
+Requirement already satisfied: requests-oauthlib in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from kubernetes>=28.1.0->chromadb~=1.1.0->crewai) (2.0.0)
+Requirement already satisfied: durationpy>=0.7 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from kubernetes>=28.1.0->chromadb~=1.1.0->crewai) (0.10)
+Requirement already satisfied: cachetools<7.0,>=2.0.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from google-auth>=1.0.1->kubernetes>=28.1.0->chromadb~=1.1.0->crewai) (6.2.3)
+Requirement already satisfied: pyasn1-modules>=0.2.1 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from google-auth>=1.0.1->kubernetes>=28.1.0->chromadb~=1.1.0->crewai) (0.4.2)
+Requirement already satisfied: rsa<5,>=3.1.4 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from google-auth>=1.0.1->kubernetes>=28.1.0->chromadb~=1.1.0->crewai) (4.9.1)
+Requirement already satisfied: pyasn1>=0.1.3 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from rsa<5,>=3.1.4->google-auth>=1.0.1->kubernetes>=28.1.0->chromadb~=1.1.0->crewai) (0.6.1)
+Requirement already satisfied: mdurl~=0.1 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from markdown-it-py>=2.2.0->rich>=10.11.0->chromadb~=1.1.0->crewai) (0.1.2)
+Requirement already satisfied: coloredlogs in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from onnxruntime>=1.14.1->chromadb~=1.1.0->crewai) (15.0.1)
+Requirement already satisfied: flatbuffers in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from onnxruntime>=1.14.1->chromadb~=1.1.0->crewai) (25.12.19)
+Requirement already satisfied: sympy in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from onnxruntime>=1.14.1->chromadb~=1.1.0->crewai) (1.14.0)
+INFO: pip is looking at multiple versions of opentelemetry-exporter-otlp-proto-grpc to determine which version is compatible with other requirements. This could take a while.
+Collecting opentelemetry-exporter-otlp-proto-grpc>=1.2.0 (from chromadb~=1.1.0->crewai)
+  Downloading opentelemetry_exporter_otlp_proto_grpc-1.39.0-py3-none-any.whl.metadata (2.5 kB)
+  Downloading opentelemetry_exporter_otlp_proto_grpc-1.38.0-py3-none-any.whl.metadata (2.4 kB)
+  Downloading opentelemetry_exporter_otlp_proto_grpc-1.37.0-py3-none-any.whl.metadata (2.4 kB)
+  Downloading opentelemetry_exporter_otlp_proto_grpc-1.36.0-py3-none-any.whl.metadata (2.4 kB)
+  Downloading opentelemetry_exporter_otlp_proto_grpc-1.35.0-py3-none-any.whl.metadata (2.4 kB)
+  Downloading opentelemetry_exporter_otlp_proto_grpc-1.34.1-py3-none-any.whl.metadata (2.4 kB)
+Collecting cfgv>=2.0.0 (from pre-commit>=4.3.0->instructor>=1.3.3->crewai)
+  Downloading cfgv-3.5.0-py2.py3-none-any.whl.metadata (8.9 kB)
+Collecting identify>=1.0.0 (from pre-commit>=4.3.0->instructor>=1.3.3->crewai)
+  Downloading identify-2.6.16-py2.py3-none-any.whl.metadata (4.4 kB)
+Collecting nodeenv>=0.11.1 (from pre-commit>=4.3.0->instructor>=1.3.3->crewai)
+  Downloading nodeenv-1.10.0-py2.py3-none-any.whl.metadata (24 kB)
+Collecting virtualenv>=20.10.0 (from pre-commit>=4.3.0->instructor>=1.3.3->crewai)
+  Downloading virtualenv-20.36.1-py3-none-any.whl.metadata (4.7 kB)
+Requirement already satisfied: httptools>=0.6.3 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from uvicorn[standard]>=0.18.3->chromadb~=1.1.0->crewai) (0.7.1)
+Requirement already satisfied: watchfiles>=0.13 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from uvicorn[standard]>=0.18.3->chromadb~=1.1.0->crewai) (1.1.1)
+Requirement already satisfied: websockets>=10.4 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from uvicorn[standard]>=0.18.3->chromadb~=1.1.0->crewai) (15.0.1)
+Collecting distlib<1,>=0.3.7 (from virtualenv>=20.10.0->pre-commit>=4.3.0->instructor>=1.3.3->crewai)
+  Downloading distlib-0.4.0-py2.py3-none-any.whl.metadata (5.2 kB)
+Collecting platformdirs<5,>=3.9.1 (from virtualenv>=20.10.0->pre-commit>=4.3.0->instructor>=1.3.3->crewai)
+  Downloading platformdirs-4.5.1-py3-none-any.whl.metadata (12 kB)
+Requirement already satisfied: humanfriendly>=9.1 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from coloredlogs->onnxruntime>=1.14.1->chromadb~=1.1.0->crewai) (10.0)
+Requirement already satisfied: pyreadline3 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from humanfriendly>=9.1->coloredlogs->onnxruntime>=1.14.1->chromadb~=1.1.0->crewai) (3.5.4)
+Requirement already satisfied: oauthlib>=3.0.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from requests-oauthlib->kubernetes>=28.1.0->chromadb~=1.1.0->crewai) (3.3.1)
+Requirement already satisfied: mpmath<1.4,>=1.1.0 in c:\users\hooxi\appdata\local\packages\pythonsoftwarefoundation.python.3.13_qbz5n2kfra8p0\localcache\local-packages\python313\site-packages (from sympy->onnxruntime>=1.14.1->chromadb~=1.1.0->crewai) (1.3.0)
+Downloading crewai-1.8.1-py3-none-any.whl (709 kB)
+   ---------------------------------------- 710.0/710.0 kB 25.2 MB/s  0:00:00
+Downloading aiosqlite-0.21.0-py3-none-any.whl (15 kB)
+Downloading appdirs-1.4.4-py2.py3-none-any.whl (9.6 kB)
+Downloading chromadb-1.1.1-cp39-abi3-win_amd64.whl (19.8 MB)
+   ---------------------------------------- 19.8/19.8 MB 28.8 MB/s  0:00:00
+Downloading click-8.1.8-py3-none-any.whl (98 kB)
+Downloading json_repair-0.25.3-py3-none-any.whl (12 kB)
+Downloading json5-0.10.0-py3-none-any.whl (34 kB)
+Downloading jsonref-1.1.0-py3-none-any.whl (9.4 kB)
+Downloading mcp-1.16.0-py3-none-any.whl (167 kB)
+Downloading openai-1.83.0-py3-none-any.whl (723 kB)
+   ---------------------------------------- 723.4/723.4 kB 18.1 MB/s  0:00:00
+Using cached openpyxl-3.1.5-py2.py3-none-any.whl (250 kB)
+Downloading opentelemetry_api-1.34.1-py3-none-any.whl (65 kB)
+Downloading opentelemetry_exporter_otlp_proto_http-1.34.1-py3-none-any.whl (17 kB)
+Downloading opentelemetry_exporter_otlp_proto_common-1.34.1-py3-none-any.whl (18 kB)
+Downloading opentelemetry_proto-1.34.1-py3-none-any.whl (55 kB)
+Downloading opentelemetry_sdk-1.34.1-py3-none-any.whl (118 kB)
+Downloading opentelemetry_semantic_conventions-0.55b1-py3-none-any.whl (196 kB)
+Downloading pdfplumber-0.11.9-py3-none-any.whl (60 kB)
+Downloading pdfminer_six-20251230-py3-none-any.whl (6.6 MB)
+   ---------------------------------------- 6.6/6.6 MB 27.1 MB/s  0:00:00
+Downloading portalocker-2.7.0-py2.py3-none-any.whl (15 kB)
+Downloading protobuf-5.29.5-cp310-abi3-win_amd64.whl (434 kB)
+Downloading pydantic-2.11.10-py3-none-any.whl (444 kB)
+Downloading pydantic_core-2.33.2-cp313-cp313-win_amd64.whl (2.0 MB)
+   ---------------------------------------- 2.0/2.0 MB 30.5 MB/s  0:00:00
+Downloading pydantic_settings-2.10.1-py3-none-any.whl (45 kB)
+Downloading PyJWT-2.9.0-py3-none-any.whl (22 kB)
+Downloading python_dotenv-1.1.1-py3-none-any.whl (20 kB)
+Downloading regex-2024.9.11-cp313-cp313-win_amd64.whl (273 kB)
+Downloading tokenizers-0.20.3-cp313-none-win_amd64.whl (2.4 MB)
+   ---------------------------------------- 2.4/2.4 MB 34.7 MB/s  0:00:00
+Downloading tomli-2.0.2-py3-none-any.whl (13 kB)
+Downloading tomli_w-1.1.0-py3-none-any.whl (6.4 kB)
+Downloading uv-0.9.26-py3-none-win_amd64.whl (23.7 MB)
+   ---------------------------------------- 23.7/23.7 MB 31.5 MB/s  0:00:00
+Downloading instructor-1.12.0-py3-none-any.whl (157 kB)
+Downloading jiter-0.10.0-cp313-cp313-win_amd64.whl (205 kB)
+Downloading diskcache-5.6.3-py3-none-any.whl (45 kB)
+Downloading opentelemetry_exporter_otlp_proto_grpc-1.34.1-py3-none-any.whl (18 kB)
+Using cached pillow-12.1.0-cp313-cp313-win_amd64.whl (7.0 MB)
+Downloading pre_commit-4.5.1-py2.py3-none-any.whl (226 kB)
+Downloading cfgv-3.5.0-py2.py3-none-any.whl (7.4 kB)
+Downloading identify-2.6.16-py2.py3-none-any.whl (99 kB)
+Downloading nodeenv-1.10.0-py2.py3-none-any.whl (23 kB)
+Downloading pypdfium2-5.3.0-py3-none-win_amd64.whl (3.1 MB)
+   ---------------------------------------- 3.1/3.1 MB 38.5 MB/s  0:00:00
+Downloading virtualenv-20.36.1-py3-none-any.whl (6.0 MB)
+   ---------------------------------------- 6.0/6.0 MB 34.8 MB/s  0:00:00
+Downloading distlib-0.4.0-py2.py3-none-any.whl (469 kB)
+Downloading platformdirs-4.5.1-py3-none-any.whl (18 kB)
+Using cached et_xmlfile-2.0.0-py3-none-any.whl (18 kB)
+Installing collected packages: distlib, appdirs, uv, tomli-w, tomli, regex, python-dotenv, pypdfium2, pyjwt, pydantic-core, protobuf, portalocker, platformdirs, Pillow, nodeenv, jsonref, json5, json-repair, jiter, identify, et-xmlfile, diskcache, click, cfgv, aiosqlite, virtualenv, pydantic, opentelemetry-proto, opentelemetry-api, openpyxl, tokenizers, pydantic-settings, pre-commit, pdfminer.six, opentelemetry-semantic-conventions, opentelemetry-exporter-otlp-proto-common, openai, pdfplumber, opentelemetry-sdk, mcp, instructor, opentelemetry-exporter-otlp-proto-http, opentelemetry-exporter-otlp-proto-grpc, chromadb, crewai
+  Attempting uninstall: regex
+    Found existing installation: regex 2025.11.3
+    Uninstalling regex-2025.11.3:
+      Successfully uninstalled regex-2025.11.3
+  Attempting uninstall: python-dotenv
+    Found existing installation: python-dotenv 1.2.1
+    Uninstalling python-dotenv-1.2.1:
+      Successfully uninstalled python-dotenv-1.2.1
+  Attempting uninstall: pyjwt
+    Found existing installation: PyJWT 2.10.1
+    Uninstalling PyJWT-2.10.1:
+      Successfully uninstalled PyJWT-2.10.1
+  Attempting uninstall: pydantic-core
+    Found existing installation: pydantic_core 2.41.5
+    Uninstalling pydantic_core-2.41.5:
+      Successfully uninstalled pydantic_core-2.41.5
+  Attempting uninstall: protobuf
+    Found existing installation: protobuf 6.33.2
+    Uninstalling protobuf-6.33.2:
+      Successfully uninstalled protobuf-6.33.2
+  Attempting uninstall: jiter
+    Found existing installation: jiter 0.12.0
+    Uninstalling jiter-0.12.0:
+      Successfully uninstalled jiter-0.12.0
+  Attempting uninstall: click
+    Found existing installation: click 8.3.1
+    Uninstalling click-8.3.1:
+      Successfully uninstalled click-8.3.1
+  Attempting uninstall: pydantic
+    Found existing installation: pydantic 2.12.5
+    Uninstalling pydantic-2.12.5:
+      Successfully uninstalled pydantic-2.12.5
+  Attempting uninstall: opentelemetry-proto
+    Found existing installation: opentelemetry-proto 1.39.1
+    Uninstalling opentelemetry-proto-1.39.1:
+      Successfully uninstalled opentelemetry-proto-1.39.1
+  Attempting uninstall: opentelemetry-api
+    Found existing installation: opentelemetry-api 1.39.1
+    Uninstalling opentelemetry-api-1.39.1:
+      Successfully uninstalled opentelemetry-api-1.39.1
+  Attempting uninstall: tokenizers
+    Found existing installation: tokenizers 0.22.1
+    Uninstalling tokenizers-0.22.1:
+      Successfully uninstalled tokenizers-0.22.1
+  Attempting uninstall: pydantic-settings
+    Found existing installation: pydantic-settings 2.12.0
+    Uninstalling pydantic-settings-2.12.0:
+      Successfully uninstalled pydantic-settings-2.12.0
+  Attempting uninstall: opentelemetry-semantic-conventions
+    Found existing installation: opentelemetry-semantic-conventions 0.60b1
+    Uninstalling opentelemetry-semantic-conventions-0.60b1:
+      Successfully uninstalled opentelemetry-semantic-conventions-0.60b1
+  Attempting uninstall: opentelemetry-exporter-otlp-proto-common
+    Found existing installation: opentelemetry-exporter-otlp-proto-common 1.39.1
+    Uninstalling opentelemetry-exporter-otlp-proto-common-1.39.1:
+      Successfully uninstalled opentelemetry-exporter-otlp-proto-common-1.39.1
+  Attempting uninstall: openai
+    Found existing installation: openai 2.14.0
+    Uninstalling openai-2.14.0:
+      Successfully uninstalled openai-2.14.0
+  Attempting uninstall: opentelemetry-sdk
+    Found existing installation: opentelemetry-sdk 1.39.1
+    Uninstalling opentelemetry-sdk-1.39.1:
+      Successfully uninstalled opentelemetry-sdk-1.39.1
+  Attempting uninstall: mcp
+    Found existing installation: mcp 1.24.0
+    Uninstalling mcp-1.24.0:
+      Successfully uninstalled mcp-1.24.0
+  Attempting uninstall: opentelemetry-exporter-otlp-proto-http
+    Found existing installation: opentelemetry-exporter-otlp-proto-http 1.39.1
+    Uninstalling opentelemetry-exporter-otlp-proto-http-1.39.1:
+      Successfully uninstalled opentelemetry-exporter-otlp-proto-http-1.39.1
+  Attempting uninstall: opentelemetry-exporter-otlp-proto-grpc
+    Found existing installation: opentelemetry-exporter-otlp-proto-grpc 1.39.1
+    Uninstalling opentelemetry-exporter-otlp-proto-grpc-1.39.1:
+      Successfully uninstalled opentelemetry-exporter-otlp-proto-grpc-1.39.1
+  Attempting uninstall: chromadb
+    Found existing installation: chromadb 1.4.0
+    Uninstalling chromadb-1.4.0:
+      Successfully uninstalled chromadb-1.4.0
+
+Successfully installed Pillow-12.1.0 aiosqlite-0.21.0 appdirs-1.4.4 cfgv-3.5.0 chromadb-1.1.1 click-8.1.8 crewai-1.8.1 diskcache-5.6.3 distlib-0.4.0 et-xmlfile-2.0.0 identify-2.6.16 instructor-1.12.0 jiter-0.10.0 json-repair-0.25.3 json5-0.10.0 jsonref-1.1.0 mcp-1.16.0 nodeenv-1.10.0 openai-1.83.0 openpyxl-3.1.5 opentelemetry-api-1.34.1 opentelemetry-exporter-otlp-proto-common-1.34.1 opentelemetry-exporter-otlp-proto-grpc-1.34.1 opentelemetry-exporter-otlp-proto-http-1.34.1 opentelemetry-proto-1.34.1 opentelemetry-sdk-1.34.1 opentelemetry-semantic-conventions-0.55b1 pdfminer.six-20251230 pdfplumber-0.11.9 platformdirs-4.5.1 portalocker-2.7.0 pre-commit-4.5.1 protobuf-5.29.5 pydantic-2.11.10 pydantic-core-2.33.2 pydantic-settings-2.10.1 pyjwt-2.9.0 pypdfium2-5.3.0 python-dotenv-1.1.1 regex-2024.9.11 tokenizers-0.20.3 tomli-2.0.2 tomli-w-1.1.0 uv-0.9.26 virtualenv-20.36.1
