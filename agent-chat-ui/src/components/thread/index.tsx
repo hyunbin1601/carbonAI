@@ -107,6 +107,7 @@ export function Thread() {
     handlePaste,
   } = useFileUpload();
   const [firstTokenReceived, setFirstTokenReceived] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const isLargeScreen = useMediaQuery("(min-width: 1024px)");
 
   const stream = useStreamContext();
@@ -167,14 +168,55 @@ export function Thread() {
     prevMessageLength.current = messages.length;
   }, [messages]);
 
+  // 스트리밍 완료 감지 - stream.isLoading 또는 메시지 안정화로 감지
+  const prevMessageContent = useRef<string>("");
+  const streamingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    if (!isSubmitting) return;
+
+    // stream.isLoading이 false가 되면 완료
+    if (!isLoading && firstTokenReceived) {
+      setIsSubmitting(false);
+      return;
+    }
+
+    // 마지막 AI 메시지의 content 변화 감지
+    const lastAiMessage = messages.filter(m => m.type === "ai").pop();
+    const currentContent = JSON.stringify(lastAiMessage?.content || "");
+
+    if (currentContent !== prevMessageContent.current) {
+      prevMessageContent.current = currentContent;
+
+      // 타이머 리셋
+      if (streamingTimeoutRef.current) {
+        clearTimeout(streamingTimeoutRef.current);
+      }
+
+      // 1.5초 동안 변화 없으면 완료로 간주
+      streamingTimeoutRef.current = setTimeout(() => {
+        if (isSubmitting && firstTokenReceived) {
+          setIsSubmitting(false);
+        }
+      }, 1500);
+    }
+
+    return () => {
+      if (streamingTimeoutRef.current) {
+        clearTimeout(streamingTimeoutRef.current);
+      }
+    };
+  }, [isSubmitting, isLoading, firstTokenReceived, messages]);
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (
       (input.trim().length === 0 && contentBlocks.length === 0) ||
-      isLoading
+      isSubmitting
     )
       return;
     setFirstTokenReceived(false);
+    setIsSubmitting(true);
 
     const newHumanMessage: Message = {
       id: uuidv4(),
@@ -423,6 +465,8 @@ export function Thread() {
                             !e.nativeEvent.isComposing
                           ) {
                             e.preventDefault();
+                            // 스트리밍 중일 때 Enter 키 제출 비활성화
+                            if (isSubmitting) return;
                             const el = e.target as HTMLElement | undefined;
                             const form = el?.closest("form");
                             form?.requestSubmit();
@@ -488,10 +532,13 @@ export function Thread() {
                           </TooltipProvider> */}
 
                         </div>
-                        {stream.isLoading ? (
+                        {isSubmitting ? (
                           <Button
                             key="stop"
-                            onClick={() => stream.stop()}
+                            onClick={() => {
+                              stream.stop();
+                              setIsSubmitting(false);
+                            }}
                             size="icon"
                             variant="outline"
                             className="h-8 w-8"
@@ -504,7 +551,7 @@ export function Thread() {
                             size="icon"
                             className="h-8 w-8 rounded-lg"
                             disabled={
-                              isLoading ||
+                              isSubmitting ||
                               (!input.trim() && contentBlocks.length === 0)
                             }
                           >
