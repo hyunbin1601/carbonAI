@@ -15,6 +15,10 @@ import { useQueryState, parseAsBoolean } from "nuqs";
 import { GenericInterruptView } from "./generic-interrupt";
 import { useArtifact } from "../artifact";
 import { useTypingEffect } from "@/hooks/useTypingEffect";
+import {
+  filterIncompleteVisualizationBlocks,
+  getVisualizationLoadingMessage,
+} from "@/lib/code-block-filter";
 
 function CustomComponent({
   message,
@@ -175,15 +179,37 @@ export function AssistantMessage({
           </>
         ) : (
           <>
-            {displayedText && (
-              <div className="py-1 leading-relaxed">
-                <MarkdownText>{displayedText}</MarkdownText>
-                {/* 타이핑 커서 표시 */}
-                {isTyping && (
-                  <span className="inline-block w-0.5 h-4 bg-foreground/70 animate-pulse ml-0.5 align-middle" />
-                )}
-              </div>
-            )}
+            {displayedText && (() => {
+              // 불완전한 시각화 코드 블록 필터링
+              const { filteredText, pendingLanguage } = filterIncompleteVisualizationBlocks(displayedText);
+
+              return (
+                <>
+                  {filteredText && (
+                    <div className="py-1 leading-relaxed">
+                      <MarkdownText>{filteredText}</MarkdownText>
+                      {/* 타이핑 커서 표시 - 시각화 생성 중이 아닐 때만 */}
+                      {isTyping && !pendingLanguage && (
+                        <span className="inline-block w-0.5 h-4 bg-foreground/70 animate-pulse ml-0.5 align-middle" />
+                      )}
+                    </div>
+                  )}
+                  {/* 시각화 생성 중 로딩 표시 */}
+                  {pendingLanguage && (
+                    <div className="rounded-xl bg-muted/50 dark:bg-zinc-900 p-6 border border-border/30 dark:border-zinc-700 animate-pulse">
+                      <div className="flex items-center justify-center gap-3 text-muted-foreground">
+                        <div className="flex gap-1">
+                          <div className="h-2 w-2 rounded-full bg-foreground/40 animate-[pulse_1.5s_ease-in-out_infinite]" />
+                          <div className="h-2 w-2 rounded-full bg-foreground/40 animate-[pulse_1.5s_ease-in-out_0.3s_infinite]" />
+                          <div className="h-2 w-2 rounded-full bg-foreground/40 animate-[pulse_1.5s_ease-in-out_0.6s_infinite]" />
+                        </div>
+                        <span className="text-sm">{getVisualizationLoadingMessage(pendingLanguage)}</span>
+                      </div>
+                    </div>
+                  )}
+                </>
+              );
+            })()}
 
             {!hideToolCalls && (
               <>
